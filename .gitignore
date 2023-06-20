@@ -1,0 +1,4 @@
+# don't show .env, it has keys and sensitive info
+.env
+# don't include the modules folder which is packed with stuff
+node_modules/
