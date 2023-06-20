@@ -13,6 +13,7 @@
     "discord.js": "^14.11.0",
     "djs-commander": "^0.0.50",
     "dotenv": "^16.1.4",
-    "mongoose": "^7.3.0"
+    "mongoose": "^7.3.0",
+    "undici": "^5.22.1"
   }
 }
