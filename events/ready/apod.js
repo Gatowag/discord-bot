@@ -7,13 +7,10 @@ module.exports = async (client) => {
 	let day = 1000 * 60 * 60 * 24;
 
 	setInterval(async () => {
-		//testChannel.send('testing an interval message every 5 seconds');
-		console.log('interval function begins now');
 
 		let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
 		let data = await apodResponse.body.json();
 
-		console.log(`data requested and retrieved`);
 		let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2,4)+data.date.slice(5,7)+data.date.slice(8)}.html`;
 
 		// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
