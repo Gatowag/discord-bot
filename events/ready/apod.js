@@ -36,6 +36,7 @@ module.exports = async (client) => {
 			} else {
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
+					.setURL(permaLink)
 					.setDescription(data.explanation)
 					.setImage(`${data.thumbnail}`)
 					.setColor(0x0165b3)
