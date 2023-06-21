@@ -62,7 +62,7 @@ module.exports = async (client) => {
 					name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
 					value: data.url,
 					inline: false,
-				.setTimestamp(`${data.date}`);
+				});
 		
 			await testChannel.send({ embeds: [embed] });
 			console.log('embed sent with video placeholder but no copyright');
@@ -74,7 +74,7 @@ module.exports = async (client) => {
 				.setURL(data.url)
 				.setDescription(data.explanation)
 				.setImage(`${data.url}`)
-				.setTimestamp(`${data.date}`);
+				.setColor(0x0165b3);
 		
 			await testChannel.send({ embeds: [embed] });
 			console.log('embed sent with image but no copyright');
