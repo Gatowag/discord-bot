@@ -13,11 +13,11 @@ module.exports = async (message, client, interaction) => {
 	if (!message.inGuild() || message.author.bot) return;
 
 	const roleIDs = [
-		'1120480710885646356',	//0: sentient being
-		'513935083690917949',	//1: local dignitary
-		'1120238776258662420',	//2: planetary diplomat
-		'1120238834840514580',	//3: galactic ambassador
-		'1120480580291797134'	//4: interdimensional explorer
+		'747990765409402960',	//0: sentient being
+		'747991758453080185',	//1: local dignitary
+		'777788958251155497',	//2: planetary diplomat
+		'777789109191835678',	//3: galactic ambassador
+		'777790027525652480'	//4: interdimensional explorer
 	];
 
 	const repEarned = 1;
@@ -40,7 +40,7 @@ module.exports = async (message, client, interaction) => {
 				level.rep = 1;
 				level.level += 1;
 
-				let unlocksChannel = message.guild.channels.resolve('1120497447005851778');
+				let unlocksChannel = message.guild.channels.resolve('809015126857875466');
 				let newRole = message.guild.roles.cache.get(roleIDs[4]);
 				let lvlMsgNum = 5;
 
