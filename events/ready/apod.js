@@ -26,7 +26,6 @@ module.exports = async (client) => {
 					.setDescription(data.explanation)
 					.setImage(`${data.url}`)
 					.setColor(0x0165b3)
-					.setTimestamp(`${data.date}`)
 					.setFooter({ text: `Copyright - ${data.copyright}` }); // please keep this due to NASA's restrictions
 				
 				await testChannel.send({ embeds: [embed] });
@@ -45,7 +44,6 @@ module.exports = async (client) => {
 						value: data.url,
 						inline: false,
 					})
-					.setTimestamp(`${data.date}`)
 					.setFooter({ text: `Copyright - ${data.copyright}` }); // please keep this due to NASA's restrictions
 									
 				await testChannel.send({ embeds: [embed] });
@@ -64,7 +62,6 @@ module.exports = async (client) => {
 					name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
 					value: data.url,
 					inline: false,
-				})
 				.setTimestamp(`${data.date}`);
 		
 			await testChannel.send({ embeds: [embed] });
@@ -77,7 +74,6 @@ module.exports = async (client) => {
 				.setURL(data.url)
 				.setDescription(data.explanation)
 				.setImage(`${data.url}`)
-				.setColor(0x0165b3)
 				.setTimestamp(`${data.date}`);
 		
 			await testChannel.send({ embeds: [embed] });
