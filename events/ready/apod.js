@@ -14,6 +14,7 @@ module.exports = async (client) => {
 		let data = await apodResponse.body.json();
 
 		console.log(`data requested and retrieved`);
+		let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2,4)+data.date.slice(5,7)+data.date.slice(8)}.html`;
 
 		// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
 		// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
@@ -22,7 +23,7 @@ module.exports = async (client) => {
 			if (data.media_type === 'image') {
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
-					.setURL(data.url)
+					.setURL(permaLink)
 					.setDescription(data.explanation)
 					.setImage(`${data.url}`)
 					.setColor(0x0165b3)
@@ -35,7 +36,6 @@ module.exports = async (client) => {
 			} else {
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
-					.setURL(data.url)
 					.setDescription(data.explanation)
 					.setImage(`${data.thumbnail}`)
 					.setColor(0x0165b3)
@@ -54,7 +54,7 @@ module.exports = async (client) => {
 		} else if (data.media_type === 'video') {
 			let embed = new EmbedBuilder()
 				.setTitle(data.title)
-				.setURL(data.url)
+				.setURL(permaLink)
 				.setDescription(data.explanation)
 				.setImage(`${data.thumbnail}`)
 				.setColor(0x0165b3)
@@ -71,7 +71,7 @@ module.exports = async (client) => {
 		} else if (data.media_type === 'image') {
 			let embed = new EmbedBuilder()
 				.setTitle(data.title)
-				.setURL(data.url)
+				.setURL(permaLink)
 				.setDescription(data.explanation)
 				.setImage(`${data.url}`)
 				.setColor(0x0165b3);
