@@ -3,7 +3,7 @@ const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 
 module.exports = {
-	deleted: false,
+	deleted: true,
 	data: new SlashCommandBuilder()
 	.setName('progress')
 		.setDescription('Check on your own reputation stats.'),

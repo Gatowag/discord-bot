@@ -3,7 +3,7 @@ const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 
 module.exports = {
-	deleted: false,
+	deleted: true,
 	data: new SlashCommandBuilder()
 	.setName('modify-rep')
 	.setDescription('Change a user\'s reputation amount.')

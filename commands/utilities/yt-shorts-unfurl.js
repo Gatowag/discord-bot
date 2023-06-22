@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	deleted: false,
+	deleted: true,
 	data: new SlashCommandBuilder()
 	.setName('yt-shorts-unfurl')
 		.setDescription('Convert a youtube shorts link to a regular youtube link.')
