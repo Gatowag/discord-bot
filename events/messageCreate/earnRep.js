@@ -29,9 +29,9 @@ module.exports = async (message, client, interaction) => {
 
 	try {
 		const level = await Level.findOne(query);
-		const oldLvl = level.level;
 
 		if (level) {
+			const oldLvl = level.level;
 			level.rep += repEarned;
 
 			console.log(`MESSAGE SENT ___ user: ${message.member.displayName}, rep: ${level.rep}/${levelScaling(level.level)}, level: ${level.level}`);
@@ -84,6 +84,7 @@ module.exports = async (message, client, interaction) => {
 
 		// if (!level)
 		else {
+			console.log(`DIAGNOSTIC ___ needs to create new level`);
 			//create new level
 			const newLevel = new Level({
 				userId: message.author.id,
