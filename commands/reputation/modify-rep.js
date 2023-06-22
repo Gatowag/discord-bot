@@ -16,8 +16,7 @@ module.exports = {
 		option
 			.setName('amount')
 			.setDescription('how much reputation you want to grant or revoke')
-			.setRequired(true))
-	.setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS),
+			.setRequired(true)),
 	
 	run: async ({ interaction }) => {
 		const userVal = interaction.options.get('user').value;

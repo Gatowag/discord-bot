@@ -11,8 +11,7 @@ module.exports = {
 			option
 				.setName('user')
 				.setDescription('the user whose stats you\'re checking')
-				.setRequired(true))
-		.setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS),
+				.setRequired(true)),
 	
 	run: async ({ interaction }) => {
 		const userVal = interaction.options.get('user').value;

@@ -87,8 +87,7 @@ module.exports = {
 				.addStringOption((option) =>
 					option
 						.setName('author')
-						.setDescription('the platform you\'re sending people to')))
-		.setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS),
+						.setDescription('the platform you\'re sending people to'))),
 	
 	run: ({ interaction }) => {
 

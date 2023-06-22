@@ -17,8 +17,7 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName('success-reply')
-				.setDescription('message sent when completed'))
-		.setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS),
+				.setDescription('message sent when completed')),
 	
 	run: async ({ interaction, client }) => {
 		const role1 = interaction.options.getRole('role');

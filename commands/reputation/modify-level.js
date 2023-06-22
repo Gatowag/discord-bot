@@ -16,8 +16,7 @@ module.exports = {
 		option
 			.setName('amount')
 			.setDescription('how many levels you want to grant or revoke')
-			.setRequired(true))
-	.setDefaultMemberPermissions(PermissionFlagsBits.MODERATE_MEMBERS),
+			.setRequired(true)),
 	
 	run: async ({ interaction }) => {
 
