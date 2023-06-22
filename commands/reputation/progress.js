@@ -48,8 +48,17 @@ module.exports = {
 				console.log(`REPUTATION ___ ${interaction.member.displayName} requested a progression check on themselves.`);
 			}
 			else {
+				console.log(`DIAGNOSTIC ___ needs to create new level`);
+				//create new level
+				const newLevel = new Level({
+					userId: u.id,
+					guildId: interaction.guild.id,
+				});
+
+				await newLevel.save();
+				
 				interaction.reply({
-					content: `You don't have any progression yet. Start chatting with folks, I believe in you!`,
+					content: `You weren't in the system, but have now been initialized.`,
 					ephemeral: true
 				});
 			}

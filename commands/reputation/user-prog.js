@@ -33,30 +33,48 @@ module.exports = {
 
 		try {
 			const level = await Level.findOne(query);
-			const perc = Math.round((level.rep / levelScaling(level.level))*100)/100;
-			const progressFill = '▨';
-			const progressEmpty = '▢';
-			const progressBar = `${progressFill.repeat(Math.round(perc * 20))}${progressEmpty.repeat(20 - Math.round(perc * 20))}`;
-			let i = level.level;
-			let unlocksRemain = 0;
-			while (i++ < channelUnlocks.length - 1) {
-				unlocksRemain += channelUnlocks[i];
-			};
 
 			if (level) {
-				interaction.reply({
-					content: `### (${u}) ${u.displayName}'s progression stats\nThey are ${Math.floor(perc*100)}% (${level.rep}/${levelScaling(level.level)}) to level ${level.level+1}.\n${progressBar}`,
-					ephemeral: false
+				const perc = Math.round((level.rep / levelScaling(level.level))*100)/100;
+				const progressFill = '▨';
+				const progressEmpty = '▢';
+				const progressBar = `${progressFill.repeat(Math.round(perc * 20))}${progressEmpty.repeat(20 - Math.round(perc * 20))}`;
+				let i = level.level;
+				let unlocksRemain = 0;
+				while (i++ < channelUnlocks.length - 1) {
+					unlocksRemain += channelUnlocks[i];
+				};
+	
+				if (level) {
+					interaction.reply({
+						content: `### (${u}) ${u.displayName}'s progression stats\nThey are ${Math.floor(perc*100)}% (${level.rep}/${levelScaling(level.level)}) to level ${level.level+1}.\n${progressBar}`,
+						ephemeral: false
+					});
+	
+					console.log(`REPUTATION ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
+				}
+				else {
+					interaction.reply({
+						content: `They don't have any progression yet.`,
+						ephemeral: false
+					});
+				}
+			} else {
+				console.log(`DIAGNOSTIC ___ needs to create new level`);
+				//create new level
+				const newLevel = new Level({
+					userId: u.id,
+					guildId: interaction.guild.id,
 				});
 
-				console.log(`REPUTATION ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
-			}
-			else {
+				await newLevel.save();
+				
 				interaction.reply({
-					content: `They don't have any progression yet.`,
+					content: `${u.displayName} did not have progression established. They have now been initialized.`,
 					ephemeral: false
 				});
-			}
+			};
+			
 
 		} catch (error) {
 			console.log(`Error determining user's progress: ${error}`);
