@@ -19,7 +19,7 @@ module.exports = {
 				.setName('success-reply')
 				.setDescription('message sent when completed')),
 	
-	run: async ({ interaction, client }) => {
+	run: async ({ interaction }) => {
 		const role1 = interaction.options.getRole('role');
 		const label1 = interaction.options.get('label')?.value;
 		const success1 = interaction.options.get('success-reply')?.value;

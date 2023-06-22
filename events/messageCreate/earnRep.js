@@ -9,7 +9,7 @@ const levelScaling = require('../../utils/levelScaling');
  * @returns 
  */
 
-module.exports = async (message, client, interaction) => {
+module.exports = async (message, client) => {
 	if (!message.inGuild() || message.author.bot) return;
 
 	const roleIDs = [
