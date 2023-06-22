@@ -29,5 +29,5 @@ new CommandHandler({
 	client,
 	commandsPath: path.join(__dirname, 'commands'),
 	eventsPath: path.join(__dirname, 'events'),
-	testServer: '509705230418706462',
+	//testServer: '722360419771220080',
 });

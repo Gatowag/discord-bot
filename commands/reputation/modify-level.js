@@ -3,6 +3,7 @@ const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 
 module.exports = {
+	deleted: false,
 	data: new SlashCommandBuilder()
 	.setName('modify-level')
 	.setDescription('Change a user\'s reputation level.')
@@ -25,11 +26,11 @@ module.exports = {
 		const amount = interaction.options.get('amount').value;
 
 		const roleIDs = [
-			'1120480710885646356',	//0: sentient being
-			'513935083690917949',	//1: local dignitary
-			'1120238776258662420',	//2: planetary diplomat
-			'1120238834840514580',	//3: galactic ambassador
-			'1120480580291797134'	//4: interdimensional explorer
+			'747990765409402960',	//0: sentient being
+			'747991758453080185',	//1: local dignitary
+			'777788958251155497',	//2: planetary diplomat
+			'777789109191835678',	//3: galactic ambassador
+			'777790027525652480'	//4: interdimensional explorer
 		];
 
 		const query = {
