@@ -11,11 +11,9 @@ module.exports = (level) => {
 	} else if (l === 3) {
 		x = 50;
 	} else if (l === 4) {
-		x = 70
-	} else if (l === 5) {
-		x = 150
-	} else if (l > 5) {
-		x = 100 + 200*(l/10);
+		x = 100
+	} else if (l > 4) {
+		x = Math.round(Math.exp(l/5) * 100 - 50);
 	}
 
 	return x;
