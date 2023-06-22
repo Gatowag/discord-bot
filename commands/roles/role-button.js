@@ -36,7 +36,7 @@ module.exports = {
 		};
 		
 		if (success1 == null) {
-			success1 = `You now have the role: ${role1.name}`;
+			success1 = `You now have the role ${role1.name}`;
 		};
 		
 		const buttonRow = new ActionRowBuilder()
@@ -44,6 +44,8 @@ module.exports = {
 				button,);
 		
 		await interaction.reply({ components: [buttonRow] });
+
+		console.log(`BUTTON ___ ${interaction.member.displayName} created a button to grant the ${role1.name} role.`)
 
 		const collector = await interaction.channel.createMessageComponentCollector();
 
@@ -53,6 +55,8 @@ module.exports = {
 			if (i.customId === 'button1') {
 				member.roles.add(role1);
 				i.reply({ content: `${success1}`, ephemeral: true });
+				
+				console.log(`BUTTON ___ ${member.displayName} was successfully granted the ${role1.name} role.`);
 			};
 		})
 	}

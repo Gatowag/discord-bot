@@ -34,7 +34,7 @@ module.exports = async (message, client, interaction) => {
 			const oldLvl = level.level;
 			level.rep += repEarned;
 
-			console.log(`MESSAGE SENT ___ user: ${message.member.displayName}, rep: ${level.rep}/${levelScaling(level.level)}, level: ${level.level}`);
+			console.log(`MSG SENT ___ user: ${message.member.displayName}, rep: ${level.rep}/${levelScaling(level.level)}, lvl: ${level.level}`);
 
 			if (level.rep > levelScaling(level.level)) {
 				level.rep = 1;
@@ -77,14 +77,14 @@ module.exports = async (message, client, interaction) => {
 			}
 
 			await level.save().catch((e) => {
-				console.log(`Error saving updated level ${e}`);
+				console.log(`ERROR ___ couldn't save new level for ${message.member.displayName}: ${e}`);
 				return;
 			});
 		}
 
 		// if (!level)
 		else {
-			console.log(`DIAGNOSTIC ___ needs to create new level`);
+			console.log(`DATABASE ___ creating new entry for ${message.member.displayName}`);
 			//create new level
 			const newLevel = new Level({
 				userId: message.author.id,
@@ -95,6 +95,6 @@ module.exports = async (message, client, interaction) => {
 			await newLevel.save();
 		}
 	} catch (error) {
-		console.log(`Error earning reputation: ${error}`);
+		console.log(`ERROR ___ couldn't earn reputation for ${message.member.displayName}: ${error}`);
 	}
 };

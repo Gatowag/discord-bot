@@ -29,17 +29,17 @@ module.exports = {
 					content: `https://www.youtube.com/watch?v=${ID}`,
 					ephemeral: true
 				});
-				console.log(`UTIL: ${u} converted a YT short link (lengthened)`);
+				console.log(`UTIL ___ ${u} converted a YT short link (lengthened)`);
 			} else {
 				interaction.reply({
 					content: `https://youtu.be/${ID}`,
 					ephemeral: true
 				});
-				console.log(`UTIL: ${u} converted a YT short link`);
+				console.log(`UTIL ___ ${u} converted a YT short link`);
 			};
 
 		} catch (error) {
-			console.log(`Error converting to normal YT link: ${error}`);
+			console.log(`ERROR ___ couldn't convert to normal YT link: ${error}`);
 		}
 	},
 }

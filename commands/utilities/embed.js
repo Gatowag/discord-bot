@@ -143,5 +143,7 @@ module.exports = {
 		};
 
 		interaction.channel.send({ embeds: [embed], files: [file] });
+
+		console.log(`EMBED ___ ${interaction.member.displayName} successfully created an embed.`);
 	},
 };

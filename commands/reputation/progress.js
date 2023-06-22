@@ -45,10 +45,10 @@ module.exports = {
 					ephemeral: true
 				});
 
-				console.log(`REPUTATION ___ ${interaction.member.displayName} requested a progression check on themselves.`);
+				console.log(`REP CHECK ___ ${interaction.member.displayName} requested a progression check on themselves.`);
 			}
 			else {
-				console.log(`DIAGNOSTIC ___ needs to create new level`);
+				console.log(`DATABASE ___ creating new entry for ${interaction.member.displayName}`);
 				//create new level
 				const newLevel = new Level({
 					userId: u.id,
@@ -64,7 +64,7 @@ module.exports = {
 			}
 
 		} catch (error) {
-			console.log(`Error determining user's progress: ${error}`);
+			console.log(`ERROR ___ couldn't determine ${interaction.member.displayName}'s progress: ${error}`);
 		}
 	},
 }

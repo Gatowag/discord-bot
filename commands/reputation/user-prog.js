@@ -44,23 +44,16 @@ module.exports = {
 					unlocksRemain += channelUnlocks[i];
 				};
 	
-				if (level) {
-					interaction.reply({
-						content: `### (${u}) ${u.displayName}'s progression stats\nThey are ${Math.floor(perc*100)}% (${level.rep}/${levelScaling(level.level)}) to level ${level.level+1}.\n${progressBar}`,
-						ephemeral: false
-					});
-	
-					console.log(`REPUTATION ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
-				}
-				else {
-					interaction.reply({
-						content: `They don't have any progression yet.`,
-						ephemeral: false
-					});
-				}
+				interaction.reply({
+					content: `### (${u}) ${u.displayName}'s progression stats\nThey are ${Math.floor(perc*100)}% (${level.rep}/${levelScaling(level.level)}) to level ${level.level+1}.\n${progressBar}`,
+					ephemeral: false
+				});
+
+				console.log(`REP CHECK ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
+
 			} else {
-				console.log(`DIAGNOSTIC ___ needs to create new level`);
-				//create new level
+				console.log(`DATABASE ___ creating new entry for ${u.displayName}`);
+
 				const newLevel = new Level({
 					userId: u.id,
 					guildId: interaction.guild.id,
@@ -76,7 +69,7 @@ module.exports = {
 			
 
 		} catch (error) {
-			console.log(`Error determining user's progress: ${error}`);
+			console.log(`ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
 		}
 	},
 }

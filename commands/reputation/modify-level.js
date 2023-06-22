@@ -57,20 +57,21 @@ module.exports = {
 				};
 
 				interaction.reply({
-					content: `You've modified ${userName}'s reputation level from ${oldLvl} to ${oldLvl + amount}.`,
+					content: `You've modified ${userName}'s reputation level from ${oldLvl} to ${oldLvl + amount}. Their progress is set to: ${level.rep}/${levelScaling(level.level)}`,
 					ephemeral: false
 				});
-				console.log(`REPUTATION ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep level from ${oldLvl} to ${level.level}. Their reputation is reset to: ${level.rep}/${levelScaling(level.level)}`);
+				console.log(`REP MOD ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep level from ${oldLvl} to ${level.level}. Their progress is set to: ${level.rep}/${levelScaling(level.level)}`);
 
 				await level.save().catch((e) => {
-					console.log(`Error saving updated level ${e}`);
+					console.log(`ERROR ___ couldn't adjust ${userName.displayName}'s reputation level: ${e}`);
 					return;
 				})
 			}
 
 			// if (!level)
 			else {
-				//create new level
+				console.log(`DATABASE ___ creating new entry for ${interaction.member.displayName}`);
+
 				const newLevel = new Level({
 					userId: userVal,
 					guildId: interaction.guild.id,
@@ -81,13 +82,13 @@ module.exports = {
 				await newLevel.save();
 
 				interaction.reply({
-					content: `You've modified ${userName}'s reputation level from 1 to ${amount}.`,
+					content: `${userName} has been initialized in the database and you've modified their reputation level from 1 to ${amount}. Their progress is set to 1/${levelScaling(level.level)}`,
 					ephemeral: false
 				});
-				console.log(`REPUTATION ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep level from ${oldLvl} to ${level.level}. Their reputation is reset to: ${level.rep}/${levelScaling(level.level)}`);
+				console.log(`REP MOD ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep level from ${oldLvl} to ${level.level}. Their progress is set to: ${level.rep}/${levelScaling(level.level)}`);
 			}
 		} catch (error) {
-			console.log(`Error adjusting reputation level: ${error}`);
+			console.log(`ERROR ___ couldn't adjust ${userName.displayName}'s reputation level: ${error}`);
 		}
 
 
