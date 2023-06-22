@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
+	deleted: false,
 	data: new SlashCommandBuilder()
 		.setName('role-button')
 		.setDescription('This creates a button that grants roles.')

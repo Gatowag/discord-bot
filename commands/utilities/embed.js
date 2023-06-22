@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
+	deleted: false,
 	data: new SlashCommandBuilder()
 		.setName('embed')
 		.setDescription('Post a user-populated embed.')
