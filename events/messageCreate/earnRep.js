@@ -40,12 +40,16 @@ module.exports = async (message, client) => {
 				level.rep = 1;
 				level.level += 1;
 
+				console.log(`DIAGNOSTIC ___ level.level: ${level.level}`);
+
 				let unlocksChannel = message.guild.channels.resolve('809015126857875466');
 				let newRole = message.guild.roles.cache.get(roleIDs[level.level]);
+				console.log(`DIAGNOSTIC ___ newRole: ${newRole}`);
 				let lvlMsgNum = 5;
 
 				if (level.level < 5) {
-					let oldRole = message.guild.roles.cache.get(roleIDs[level.level-1]);
+					let oldRole = message.guild.roles.cache.get(roleIDs[level.level - 1]);
+					console.log(`DIAGNOSTIC ___ level is less than 5, oldRole: ${oldRole}`);
 					lvlMsgNum = level.level;
 
 					message.member.roles.add(newRole);
