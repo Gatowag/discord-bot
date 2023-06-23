@@ -10,7 +10,7 @@ module.exports = async (client) => {
 	console.log('CRON ___ scheduling APOD to post every day at 10:00 US Central.');
 
 	try {
-		cron.schedule('0 10 * * *', async () => {
+		cron.schedule('0 15 * * *', async () => {
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
 			let data = await apodResponse.body.json();
 
