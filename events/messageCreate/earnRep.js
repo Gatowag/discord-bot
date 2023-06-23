@@ -41,12 +41,11 @@ module.exports = async (message, client) => {
 				level.level += 1;
 
 				let unlocksChannel = message.guild.channels.resolve('809015126857875466');
-				let newRole = message.guild.roles.cache.get(roleIDs[4]);
+				let newRole = message.guild.roles.cache.get(roleIDs[level.level]);
 				let lvlMsgNum = 5;
 
 				if (level.level < 5) {
 					let oldRole = message.guild.roles.cache.get(roleIDs[level.level-1]);
-					newRole = message.guild.roles.cache.get(roleIDs[level.level]);
 					lvlMsgNum = level.level;
 
 					message.member.roles.add(newRole);
