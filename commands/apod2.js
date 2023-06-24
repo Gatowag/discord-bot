@@ -9,9 +9,10 @@ module.exports = {
 		.setDescription('Generate an embed from today\'s APOD.'),
 	
 	run: async (client) => {
+		
+		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 
 		try {
-			let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
 			let data = await apodResponse.body.json();
 
