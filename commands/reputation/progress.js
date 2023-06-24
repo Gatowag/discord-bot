@@ -39,9 +39,17 @@ module.exports = {
 			let unlockMsg;
 			(unlocksRemain == 0) ? unlockMsg = '' : unlockMsg = `\nYou have ${unlocksRemain} channel${unlocksRemain == 1 ? '' : 's'} left to unlock.`;
 			
+			const embed = new EmbedBuilder()
+			.setTitle('your reputation stats')
+			.setDescription(`You are ${Math.floor(perc * 100)}% to level ${level.level + 1}.\n${progressBar}${unlockMsg}`)
+				.setColor('Gold')
+				.setThumbnail(u.displayAvatarURL());
+
+
 			if (level) {
 				interaction.reply({
-					content: `### your progression stats\nYou are ${Math.floor(perc*100)}% to level ${level.level+1}.\n${progressBar}${unlockMsg}`,
+					embeds: [embed],
+					//content: `### your progression stats\nYou are ${Math.floor(perc*100)}% to level ${level.level+1}.\n${progressBar}${unlockMsg}`,
 					ephemeral: true
 				});
 
