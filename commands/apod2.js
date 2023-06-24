@@ -10,6 +10,7 @@ module.exports = {
 	
 	run: async (client) => {
 
+		console.log(`DIAGNOSTIC ___ the apod command has started`);
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 		console.log(`DIAGNOSTIC ___ testChannel: ${testChannel}`);
 
