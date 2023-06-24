@@ -17,20 +17,13 @@ module.exports = {
 		const date = interaction.options.get('date')?.value;
 		(date == null) ? (d = "") : (d = `&date=${date}`);
 
-		console.log(`DIAGNOSTIC ___ date: ${date}, d: ${d}`);
-
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 
 		try {
-			console.log(`DIAGNOSTIC ___ starting to try`);
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${d}`);
-			console.log(`DIAGNOSTIC ___ apodResponse requested`);
 			let data = await apodResponse.body.json();
-			console.log(`DIAGNOSTIC ___ data: ${data}`);
 
 			let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2, 4) + data.date.slice(5, 7) + data.date.slice(8)}.html`;
-
-			console.log(`DIAGNOSTIC ___ perma: ${permaLink}`);
 
 			// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
 			// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
@@ -43,7 +36,7 @@ module.exports = {
 						.setDescription(data.explanation)
 						.setImage(`${data.url}`)
 						.setColor(0x0165b3)
-						.setFooter({ text: `Copyright ${data.copyright}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 					
 					await testChannel.send({ embeds: [embed] });
 					console.log('APOD ___ embed sent with image and copyright');
@@ -61,7 +54,7 @@ module.exports = {
 							value: data.url,
 							inline: false,
 						})
-						.setFooter({ text: `Copyright ${data.copyright}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 										
 					await testChannel.send({ embeds: [embed] });
 					console.log('APOD ___ embed sent w/o image but with copyright');
@@ -99,6 +92,5 @@ module.exports = {
 		} catch (error) {
 			console.log(`ERROR ___ APOD failed unexpectedly: ${error}`);
 		};
-		console.log(`DIAGNOSTIC ___ on the other side of the try`);
 	}
 };
