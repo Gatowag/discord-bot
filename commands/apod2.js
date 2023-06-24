@@ -9,14 +9,18 @@ module.exports = {
 		.setDescription('Generate an embed from today\'s APOD.'),
 	
 	run: async (client) => {
-		
+
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
+		console.log(`DIAGNOSTIC ___ testChannel: ${testChannel}`);
 
 		try {
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
 			let data = await apodResponse.body.json();
+			console.log(`DIAGNOSTIC ___ data: ${data}`);
 
 			let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2, 4) + data.date.slice(5, 7) + data.date.slice(8)}.html`;
+
+			console.log(`DIAGNOSTIC ___ perma: ${permaLink}`);
 
 			// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
 			// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
