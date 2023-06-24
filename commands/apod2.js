@@ -15,7 +15,9 @@ module.exports = {
 		console.log(`DIAGNOSTIC ___ testChannel: ${testChannel}`);
 
 		try {
+			console.log(`DIAGNOSTIC ___ starting to try`);
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
+			console.log(`DIAGNOSTIC ___ apodResponse requested`);
 			let data = await apodResponse.body.json();
 			console.log(`DIAGNOSTIC ___ data: ${data}`);
 
@@ -90,5 +92,6 @@ module.exports = {
 		} catch (error) {
 			console.log(`ERROR ___ APOD failed unexpectedly: ${error}`);
 		};
+		console.log(`DIAGNOSTIC ___ on the other side of the try`);
 	}
 };
