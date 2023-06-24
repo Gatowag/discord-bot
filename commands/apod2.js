@@ -1,6 +1,6 @@
-require('dotenv').config();
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
+require('dotenv').config();
 
 module.exports = {
 	deleted: false,
@@ -8,7 +8,7 @@ module.exports = {
 		.setName('apod')
 		.setDescription('Generate an embed from today\'s APOD.'),
 	
-	run: async (client) => {
+	run: async ({ client }) => {
 
 		console.log(`DIAGNOSTIC ___ the apod command has started`);
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
