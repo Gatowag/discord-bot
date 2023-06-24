@@ -7,15 +7,16 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('apod')
 		.setDescription('Generate an embed from today\'s Astronomy Picture of the Day.')
-			.addStringOption((option) =>
-				option
-					.setName('date')
-					.setDescription('YYYY-MM-DD of the desired APOD')),
+		.addStringOption((option) =>
+			option
+				.setName('date')
+				.setDescription('YYYY-MM-DD of the desired APOD')),
 	
-	run: async ({ client }) => {
+	run: async ({ client, interaction }) => {
 
 		const date = interaction.options.get('date')?.value;
 		date == null ? d = "" : d = `&date=${date}`;
+		
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 
 		try {
