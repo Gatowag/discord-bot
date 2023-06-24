@@ -8,7 +8,7 @@ module.exports = {
 		.setName('apod')
 		.setDescription('Generate an embed from today\'s APOD.'),
 	
-	run: async (interaction) => {
+	run: async (client) => {
 
 		try {
 			let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
