@@ -11,6 +11,7 @@ module.exports = {
 	run: async (interaction) => {
 
 		try {
+			let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
 			let data = await apodResponse.body.json();
 
@@ -29,7 +30,7 @@ module.exports = {
 						.setColor(0x0165b3)
 						.setFooter({ text: `Copyright ${data.copyright}` }); // please keep this due to NASA's restrictions
 					
-					await interaction.channel.send({ embeds: [embed] });
+					await testChannel.send({ embeds: [embed] });
 					console.log('APOD ___ embed sent with image and copyright');
 
 					// sending a different message if the post is not an image & copyrighted
@@ -47,7 +48,7 @@ module.exports = {
 						})
 						.setFooter({ text: `Copyright ${data.copyright}` }); // please keep this due to NASA's restrictions
 										
-					await interaction.channel.send({ embeds: [embed] });
+					await testChannel.send({ embeds: [embed] });
 					console.log('APOD ___ embed sent w/o image but with copyright');
 				}
 
@@ -65,7 +66,7 @@ module.exports = {
 						inline: false,
 					});
 			
-				await interaction.channel.send({ embeds: [embed] });
+				await testChannel.send({ embeds: [embed] });
 				console.log('APOD ___ embed sent with video placeholder but no copyright');
 				
 				// checks if the post type is an image and not copyrighted
@@ -77,7 +78,7 @@ module.exports = {
 					.setImage(`${data.url}`)
 					.setColor(0x0165b3);
 			
-				await interaction.channel.send({ embeds: [embed] });
+				await testChannel.send({ embeds: [embed] });
 				console.log('APOD ___ embed sent with image but no copyright');
 			}
 		} catch (error) {
