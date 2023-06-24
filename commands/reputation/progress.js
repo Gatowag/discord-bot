@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 
