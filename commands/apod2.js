@@ -6,17 +6,21 @@ module.exports = {
 	deleted: false,
 	data: new SlashCommandBuilder()
 		.setName('apod')
-		.setDescription('Generate an embed from today\'s APOD.'),
+		.setDescription('Generate an embed from today\'s Astronomy Picture of the Day.')
+			.addStringOption((option) =>
+				option
+					.setName('date')
+					.setDescription('YYYY-MM-DD of the desired APOD')),
 	
 	run: async ({ client }) => {
 
-		console.log(`DIAGNOSTIC ___ the apod command has started`);
+		const date = interaction.options.get('date')?.value;
+		date == null ? d = "" : d = `&date=${date}`;
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
-		console.log(`DIAGNOSTIC ___ testChannel: ${testChannel}`);
 
 		try {
 			console.log(`DIAGNOSTIC ___ starting to try`);
-			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`);
+			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${d}`);
 			console.log(`DIAGNOSTIC ___ apodResponse requested`);
 			let data = await apodResponse.body.json();
 			console.log(`DIAGNOSTIC ___ data: ${data}`);
