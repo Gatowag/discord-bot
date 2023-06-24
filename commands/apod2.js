@@ -15,8 +15,10 @@ module.exports = {
 	run: async ({ client, interaction }) => {
 
 		const date = interaction.options.get('date')?.value;
-		date == null ? d = "" : d = `&date=${date}`;
-		
+		(date == null) ? (d = "") : (d = `&date=${date}`);
+
+		console.log(`DIAGNOSTIC ___ date: ${date}, d: ${d}`);
+
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 
 		try {
