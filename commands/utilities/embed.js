@@ -89,64 +89,70 @@ module.exports = {
 						.setName('author')
 						.setDescription('the platform you\'re sending people to'))),
 	
-	run: ({ interaction }) => {
+	run: async ({ interaction }) => {
 
-		//get inputs
-		const eTitle = interaction.options.get('title').value;
-		const eUrl = interaction.options.get('url').value;
-		const eDescript = interaction.options.get('descript').value;
-		const eDuration = interaction.options.get('duration').value;
-		const file = interaction.options.getAttachment('image');
-		const eType = interaction.options.get('public').value;
-		let eLevel = interaction.options.get('patron-level')?.value;
-		let eAuthor = {
-			name: interaction.options.get('author')?.value,
-		};
 		const u = interaction.member.displayName;
 		const d = new Date().toISOString();
 		const timestamp = `${d.slice(0,10)} | ${d.slice(11,19)} |`;
+
+		try {
+			//get inputs
+			const eTitle = interaction.options.get('title').value;
+			const eUrl = interaction.options.get('url').value;
+			const eDescript = interaction.options.get('descript').value;
+			const eDuration = interaction.options.get('duration').value;
+			const file = await interaction.options.getAttachment('image');
+			const eType = interaction.options.get('public').value;
+			let eLevel = interaction.options.get('patron-level')?.value;
+			let eAuthor = {
+				name: interaction.options.get('author')?.value,
+			};
+				
+			//changes based on type of post
+			let typeColor;
+			if (eType === false) {
+				typeColor = 14606046;
+			} else if (eType === true) {
+				typeColor = 844945;
+				eLevel = 'public';
+			};
+
+			//build embed
+			const embed = new EmbedBuilder()
+				.setTitle(eTitle)
+				.setURL(eUrl)
+				.setDescription(eDescript)
+				.setImage(`attachment://${file.name}`)
+				.setColor(typeColor)
+				.addFields({
+					name: 'Availability',
+					value: eLevel,
+					inline: true,
+				}, {
+					name: 'Duration',
+					value: eDuration,
+					inline: true,
+				});
 			
-		//changes based on type of post
-		let typeColor;
-		if (eType === false) {
-			typeColor = 14606046;
-		} else if (eType === true) {
-			typeColor = 844945;
-			eLevel = 'public';
-		};
+			if (eAuthor.name == 'youtube') {
+				eAuthor.url = 'https://youtube.com/emergentbeacon';
+				embed.setAuthor(eAuthor);
+			} else if (eAuthor.name == 'bandcamp') {
+				eAuthor.url = 'https://emergentbeacon.bandcamp.com';
+				embed.setAuthor(eAuthor);
+			} else if (eAuthor.name == 'patreon') {
+				eAuthor.url = 'https://patreon.com/emergentbeacon';
+				embed.setAuthor(eAuthor);
+			} else if (eAuthor.name != null) {
+				embed.setAuthor(eAuthor);
+			};
 
-		//build embed
-		const embed = new EmbedBuilder()
-			.setTitle(eTitle)
-			.setURL(eUrl)
-			.setDescription(eDescript)
-			.setImage(`attachment://${file.name}`)
-			.setColor(typeColor)
-			.addFields({
-				name: 'Availability',
-				value: eLevel,
-				inline: true,
-			}, {
-				name: 'Duration',
-				value: eDuration,
-				inline: true,
-			});
-		
-		if (eAuthor.name == 'youtube') {
-			eAuthor.url = 'https://youtube.com/emergentbeacon';
-			embed.setAuthor(eAuthor);
-		} else if (eAuthor.name == 'bandcamp') {
-			eAuthor.url = 'https://emergentbeacon.bandcamp.com';
-			embed.setAuthor(eAuthor);
-		} else if (eAuthor.name == 'patreon') {
-			eAuthor.url = 'https://patreon.com/emergentbeacon';
-			embed.setAuthor(eAuthor);
-		} else if (eAuthor.name != null) {
-			embed.setAuthor(eAuthor);
-		};
+			interaction.channel.send({ embeds: [embed], files: [file] });
 
-		interaction.channel.send({ embeds: [embed], files: [file] });
 			console.log(`${timestamp} EMBED ___ ${u} successfully created an embed.`);
 
+		} catch (error) {
+			console.log(`${timestamp} ERROR ___ couldn't complete embed for ${u}: ${error}`);
+		}
 	},
 };
