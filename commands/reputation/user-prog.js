@@ -17,6 +17,9 @@ module.exports = {
 		const userVal = interaction.options.get('user').value;
 		const u = await interaction.guild.members.fetch(userVal);
 
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
+
 		const query = {
 			userId: u.id,
 			guildId: interaction.guild.id,
@@ -49,10 +52,10 @@ module.exports = {
 					ephemeral: false
 				});
 
-				console.log(`REP CHECK ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
+				console.log(`${timestamp} REP CHECK ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
 
 			} else {
-				console.log(`DATABASE ___ creating new entry for ${u.displayName}`);
+				console.log(`${timestamp} DATABASE ___ creating new entry for ${u.displayName}`);
 
 				const newLevel = new Level({
 					userId: u.id,
@@ -69,7 +72,7 @@ module.exports = {
 			
 
 		} catch (error) {
-			console.log(`ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
+			console.log(`${timestamp} ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
 		}
 	},
 }

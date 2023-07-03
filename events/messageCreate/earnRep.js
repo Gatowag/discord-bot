@@ -23,6 +23,9 @@ module.exports = async (message, client) => {
 	const u = message.member.displayName;
 	const repEarned = 1;
 
+	const d = new Date().toISOString();
+	const timestamp = `${d.slice(0,10)} | ${d.slice(11,19)} |`;
+
 	const query = {
 		userId: message.author.id,
 		guildId: message.guild.id,
@@ -35,7 +38,7 @@ module.exports = async (message, client) => {
 			const oldLvl = level.level;
 			level.rep += repEarned;
 
-			console.log(`MSG SENT ___ user: ${u}, rep: ${level.rep}/${levelScaling(level.level)}, lvl: ${level.level}`);
+			console.log(`${timestamp} MSG SENT ___ user: ${u}, rep: ${level.rep}/${levelScaling(level.level)}, lvl: ${level.level}`);
 
 			if (level.rep > levelScaling(level.level)) {
 				level.rep = 1;
@@ -52,9 +55,9 @@ module.exports = async (message, client) => {
 					message.member.roles.add(newRole)
 						.then(() => {
 							message.member.roles.remove(oldRole);
-							console.log(`ROLES ___ ${u} was granted ${newRole.name} and revoked ${oldRole.name}`);
+							console.log(`${timestamp} ROLES ___ ${u} was granted ${newRole.name} and revoked ${oldRole.name}`);
 						})
-						.catch(error => console.log(`ERROR ___ unable to add and remove roles: ${error}`));
+						.catch(error => console.log(`${timestamp} ERROR ___ unable to add and remove roles: ${error}`));
 					
 				};
 				
@@ -73,7 +76,7 @@ module.exports = async (message, client) => {
 					`${message.member} just reached level ${level.level}. At this point you don't get new roles or channels, you just get a little older and a little better. Until next time...\n\n*This message self-terminates in 30 seconds.*`
 				];
 				
-				console.log(`LVL UP ___ user: ${u}, from lvl ${oldLvl} to ${level.level}`);
+				console.log(`${timestamp} LVL UP ___ user: ${u}, from lvl ${oldLvl} to ${level.level}`);
 
 				message.reply(lvlMessages[lvlMsgNum])
 					.then(msg => {
@@ -82,14 +85,14 @@ module.exports = async (message, client) => {
 			}
 
 			await level.save().catch((e) => {
-				console.log(`ERROR ___ couldn't save new level for ${u}: ${e}`);
+				console.log(`${timestamp} ERROR ___ couldn't save new level for ${u}: ${e}`);
 				return;
 			});
 		}
 
 		// if (!level)
 		else {
-			console.log(`DATABASE ___ creating new entry for ${u}`);
+			console.log(`${timestamp} DATABASE ___ creating new entry for ${u}`);
 			//create new level
 			const newLevel = new Level({
 				userId: message.author.id,
@@ -100,6 +103,6 @@ module.exports = async (message, client) => {
 			await newLevel.save();
 		}
 	} catch (error) {
-		console.log(`ERROR ___ couldn't earn reputation for ${u}: ${error}`);
+		console.log(`${timestamp} ERROR ___ couldn't earn reputation for ${u}: ${error}`);
 	}
 };

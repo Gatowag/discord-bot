@@ -23,23 +23,26 @@ module.exports = {
 		const IDstart = link.indexOf('shorts/');
 		const ID = link.slice(IDstart + 7);
 
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0,10)} | ${d.slice(11,19)} |`;
+
 		try {
 			if (long == true) {
 				interaction.reply({
 					content: `https://www.youtube.com/watch?v=${ID}`,
 					ephemeral: true
 				});
-				console.log(`UTIL ___ ${u} converted a YT short link (lengthened)`);
+				console.log(`${timestamp} UTIL ___ ${u} converted a YT short link (lengthened)`);
 			} else {
 				interaction.reply({
 					content: `https://youtu.be/${ID}`,
 					ephemeral: true
 				});
-				console.log(`UTIL ___ ${u} converted a YT short link`);
+				console.log(`${timestamp} UTIL ___ ${u} converted a YT short link`);
 			};
 
 		} catch (error) {
-			console.log(`ERROR ___ couldn't convert to normal YT link: ${error}`);
+			console.log(`${timestamp} ERROR ___ couldn't convert to normal YT link: ${error}`);
 		}
 	},
 }

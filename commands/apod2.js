@@ -17,6 +17,10 @@ module.exports = {
 		const date = interaction.options.get('date')?.value;
 		(date == null) ? (d = "") : (d = `&date=${date}`);
 
+		const u = interaction.member.displayName;
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
+
 		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 
 		try {
@@ -39,7 +43,7 @@ module.exports = {
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 					
 					await testChannel.send({ embeds: [embed] });
-					console.log('APOD ___ embed sent with image and copyright');
+					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
 
 					// sending a different message if the post is not an image & copyrighted
 				} else {
@@ -57,7 +61,7 @@ module.exports = {
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 										
 					await testChannel.send({ embeds: [embed] });
-					console.log('APOD ___ embed sent w/o image but with copyright');
+					console.log(`${timestamp} APOD ___ ${u} sent embed w/o image but with copyright`);
 				}
 
 				// checks if the post type is a video and not copyrighted
@@ -75,7 +79,7 @@ module.exports = {
 					});
 			
 				await testChannel.send({ embeds: [embed] });
-				console.log('APOD ___ embed sent with video placeholder but no copyright');
+				console.log(`${timestamp} APOD ___ ${u} sent embed with video placeholder but no copyright`);
 				
 				// checks if the post type is an image and not copyrighted
 			} else if (data.media_type === 'image') {
@@ -87,10 +91,10 @@ module.exports = {
 					.setColor(0x0165b3);
 			
 				await testChannel.send({ embeds: [embed] });
-				console.log('APOD ___ embed sent with image but no copyright');
+				console.log(`${timestamp} APOD ___ ${u} sent embed with image but no copyright`);
 			}
 		} catch (error) {
-			console.log(`ERROR ___ APOD failed unexpectedly: ${error}`);
+			console.log(`${timestamp} ERROR ___ ${u}'s APOD request failed unexpectedly: ${error}`);
 		};
 	}
 };

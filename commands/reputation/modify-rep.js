@@ -23,6 +23,10 @@ module.exports = {
 		const userName = await interaction.guild.members.fetch(userVal);
 		const amount = interaction.options.get('amount').value;
 
+		const u = interaction.member.displayName;
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
+
 		const query = {
 				userId: userVal,
 				guildId: interaction.guild.id,
@@ -42,17 +46,17 @@ module.exports = {
 					content: `You've modified ${userName}'s reputation amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}.` + defLvlUp,
 					ephemeral: false
 				});
-				console.log(`REP MOD ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
+				console.log(`${timestamp} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 
 				await level.save().catch((e) => {
-					console.log(`ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
+					console.log(`${timestamp} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
 					return;
 				})
 			}
 
 			// if (!level)
 			else {
-				console.log(`DATABASE ___ creating new entry for ${interaction.member.displayName}`);
+				console.log(`${timestamp} DATABASE ___ creating new entry for ${u}`);
 				
 				const newLevel = new Level({
 					userId: userVal,
@@ -67,10 +71,10 @@ module.exports = {
 					content: `${userName} has been initialized in the database and you've modified their reputation amount from 1 to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp,
 					ephemeral: false
 				});
-				console.log(`REP MOD ___ ${interaction.member.displayName} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
+				console.log(`${timestamp} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 			}
 		} catch (error) {
-			console.log(`ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
+			console.log(`${timestamp} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
 		}
 
 

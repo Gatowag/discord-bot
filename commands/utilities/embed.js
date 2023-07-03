@@ -102,6 +102,9 @@ module.exports = {
 		let eAuthor = {
 			name: interaction.options.get('author')?.value,
 		};
+		const u = interaction.member.displayName;
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0,10)} | ${d.slice(11,19)} |`;
 			
 		//changes based on type of post
 		let typeColor;
@@ -143,7 +146,7 @@ module.exports = {
 		};
 
 		interaction.channel.send({ embeds: [embed], files: [file] });
+			console.log(`${timestamp} EMBED ___ ${u} successfully created an embed.`);
 
-		console.log(`EMBED ___ ${interaction.member.displayName} successfully created an embed.`);
 	},
 };

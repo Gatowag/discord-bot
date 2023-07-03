@@ -10,6 +10,9 @@ module.exports = {
 	
 	run: async ({ interaction }) => {
 		const u = interaction.user;
+		const uName = interaction.member.displayName;
+		const d = new Date().toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		const query = {
 			userId: u.id,
@@ -53,10 +56,10 @@ module.exports = {
 					ephemeral: true
 				});
 
-				console.log(`REP CHECK ___ ${interaction.member.displayName} requested a progression check on themselves.`);
+				console.log(`${timestamp} REP CHECK ___ ${uName} requested a progression check on themselves.`);
 			}
 			else {
-				console.log(`DATABASE ___ creating new entry for ${interaction.member.displayName}`);
+				console.log(`${timestamp} DATABASE ___ creating new entry for ${uName}`);
 				//create new level
 				const newLevel = new Level({
 					userId: u.id,
@@ -72,7 +75,7 @@ module.exports = {
 			}
 
 		} catch (error) {
-			console.log(`ERROR ___ couldn't determine ${interaction.member.displayName}'s progress: ${error}`);
+			console.log(`${timestamp} ERROR ___ couldn't determine ${uName}'s progress: ${error}`);
 		}
 	},
 }
