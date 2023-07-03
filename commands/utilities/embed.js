@@ -147,7 +147,7 @@ module.exports = {
 				embed.setAuthor(eAuthor);
 			};
 
-			interaction.channel.send({ embeds: [embed], files: [file] });
+			await interaction.channel.send({ embeds: [embed], files: [file] });
 
 			console.log(`${timestamp} EMBED ___ ${u} successfully created an embed.`);
 
