@@ -34,7 +34,7 @@ module.exports = async (client) => {
 					await testChannel.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ embed sent with image and copyright`);
 
-					// sending a different message if the post is not an image & copyrighted
+				// sending a different message if the post is not an image & copyrighted
 				} else {
 					let embed = new EmbedBuilder()
 						.setTitle(data.title)
@@ -53,7 +53,7 @@ module.exports = async (client) => {
 					console.log(`${timestamp} APOD ___ embed sent w/o image but with copyright`);
 				}
 
-				// checks if the post type is a video and not copyrighted
+			// checks if the post type is a video and not copyrighted
 			} else if (data.media_type === 'video') {
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
@@ -70,7 +70,7 @@ module.exports = async (client) => {
 				await testChannel.send({ embeds: [embed] });
 				console.log(`${timestamp} APOD ___ embed sent with video placeholder but no copyright`);
 				
-				// checks if the post type is an image and not copyrighted
+			// checks if the post type is an image and not copyrighted
 			} else if (data.media_type === 'image') {
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
