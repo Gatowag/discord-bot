@@ -25,6 +25,7 @@ const client = new Client({
 		await mongoose.connect(process.env.MONGODB_URI);
 		console.log(`${timestamp} BOOT ___ Connected to DB.`);
 
+		console.log(`${timestamp} DIAG ___ token: ${process.env.TOKEN}`);
 		client.login(process.env.TOKEN);
 		console.log(`${timestamp} BOOT ___ Logged in.`);
 
