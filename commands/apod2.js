@@ -44,6 +44,7 @@ module.exports = {
 					
 					await testChannel.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
+					console.log(`${timestamp} DIAGNOSTIC ___ ${data}`);
 
 				// sending a different message if the post is not an image & copyrighted
 				} else {
