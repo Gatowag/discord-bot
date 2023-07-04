@@ -44,7 +44,7 @@ module.exports = {
 						.setDescription(data.explanation)
 						.setImage(`${data.url}`)
 						.setColor(0x0165b3)
-						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
 					
 					await chan.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
@@ -62,7 +62,7 @@ module.exports = {
 							value: data.url,
 							inline: false,
 						})
-						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
 										
 					await chan.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed w/o image but with copyright`);
