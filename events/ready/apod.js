@@ -13,7 +13,7 @@ module.exports = async (client) => {
 	const d = dBase.toISOString();
 	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 	
-	console.log(`${timestamp} BOOT ___ cron scheduled APOD to post every day at 10:00 US Central.`);
+	console.log(`${timestamp} BOOT ___ Scheduled APOD to post every day at 10:00 US Central.`);
 
 	try {
 		cron.schedule('0 15 * * *', async () => {
