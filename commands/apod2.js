@@ -14,20 +14,15 @@ module.exports = {
 	
 	run: async ({ client, interaction }) => {
 
-		console.log(`${timestamp} DIAGNOSTIC ___ command run`);
 
 		const date = interaction.options.get('date')?.value;
 		(date == null) ? (d = "") : (d = `&date=${date}`);
 
-		console.log(`${timestamp} DIAGNOSTIC ___ date determined: ${date}`);
 
 		const u = interaction.member.displayName;
 
-		console.log(`${timestamp} DIAGNOSTIC ___ variables determined: u (${u}), d(${d}), timestamp(${timestamp})`);
-
 		let chan = interaction.channel;
 		
-		console.log(`${timestamp} DIAGNOSTIC ___ channel determined: ${chan}`);
 		const timezoneOffset = -5;
 		const dBase = new Date();
 		dBase.setHours(dBase.getHours() + timezoneOffset);
@@ -55,7 +50,6 @@ module.exports = {
 					
 					await chan.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
-					console.log(`${timestamp} DIAGNOSTIC ___ ${data}`);
 
 				// sending a different message if the post is not an image & copyrighted
 				} else {
