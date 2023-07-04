@@ -19,7 +19,7 @@ module.exports = {
 
 		const u = interaction.member.displayName;
 		const chan = interaction.channel;
-		
+
 		const timezoneOffset = -5;
 		const dBase = new Date();
 		dBase.setHours(dBase.getHours() + timezoneOffset);
