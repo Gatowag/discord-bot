@@ -15,21 +15,21 @@ const client = new Client({
 });
 
 (async () => {
-	/*const timezoneOffset = -5;
+	const timezoneOffset = -5;
 	const dBase = new Date();
 	dBase.setHours(dBase.getHours() + timezoneOffset);
 	const d = dBase.toISOString();
-	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;*/
+	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 	try {
 		await mongoose.connect(process.env.MONGODB_URI);
-		console.log(`BOOT ___ Connected to DB.`);
+		console.log(`${timestamp} BOOT ___ Successfully connected to DB.`);
 
 		client.login(process.env.TOKEN);
-		console.log(`BOOT ___ Logged in.`);
+		console.log(`${timestamp} BOOT ___ Successfully logged in to Discord.`);
 
 	} catch (error) {
-		console.log(`ERROR ___ ${error}`);
+		console.log(`${timestamp} ERROR ___ ${error}`);
 	}
 })();
 
