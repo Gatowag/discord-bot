@@ -1,6 +1,9 @@
 const { ActivityType } = require('discord.js');
 
 module.exports = (client) => {
+
+	console.log(`DIAG ___ started boot-sequence.`);
+
 	const timezoneOffset = -5;
 	const dBase = new Date();
 	dBase.setHours(dBase.getHours() + timezoneOffset);
