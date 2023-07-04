@@ -17,7 +17,10 @@ module.exports = {
 		const userVal = interaction.options.get('user').value;
 		const u = await interaction.guild.members.fetch(userVal);
 
-		const d = new Date().toISOString();
+		const timezoneOffset = -5;
+		const dBase = new Date();
+		dBase.setHours(dBase.getHours() + timezoneOffset);
+		const d = dBase.toISOString();
 		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		const query = {

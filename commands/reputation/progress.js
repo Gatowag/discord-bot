@@ -11,7 +11,10 @@ module.exports = {
 	run: async ({ interaction }) => {
 		const u = interaction.user;
 		const uName = interaction.member.displayName;
-		const d = new Date().toISOString();
+		const timezoneOffset = -5;
+		const dBase = new Date();
+		dBase.setHours(dBase.getHours() + timezoneOffset);
+		const d = dBase.toISOString();
 		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		const query = {

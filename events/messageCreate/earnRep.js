@@ -23,8 +23,11 @@ module.exports = async (message, client) => {
 	const u = message.member.displayName;
 	const repEarned = 1;
 
-	const d = new Date().toISOString();
-	const timestamp = `${d.slice(0,10)} | ${d.slice(11,19)} |`;
+	const timezoneOffset = -5;
+	const dBase = new Date();
+	dBase.setHours(dBase.getHours() + timezoneOffset);
+	const d = dBase.toISOString();
+	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 	const query = {
 		userId: message.author.id,

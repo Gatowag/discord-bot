@@ -6,10 +6,14 @@ var cron = require('node-cron');
 module.exports = async (client) => {
 
 	let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
-	const d = new Date().toISOString();
+
+	const timezoneOffset = -5;
+	const dBase = new Date();
+	dBase.setHours(dBase.getHours() + timezoneOffset);
+	const d = dBase.toISOString();
 	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 	
-	console.log(`${timestamp} CRON ___ scheduling APOD to post every day at 10:00 US Central.`);
+	console.log(`${timestamp} BOOT ___ cron scheduled APOD to post every day at 10:00 US Central.`);
 
 	try {
 		cron.schedule('0 15 * * *', async () => {

@@ -24,6 +24,12 @@ module.exports = {
 		const label1 = interaction.options.get('label')?.value;
 		const success1 = interaction.options.get('success-reply')?.value;
 
+		const timezoneOffset = -5;
+		const dBase = new Date();
+		dBase.setHours(dBase.getHours() + timezoneOffset);
+		const d = dBase.toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
+
 		const button = new ButtonBuilder()
 			.setCustomId('button1')
 			.setLabel(`${role1.name}`)
@@ -45,7 +51,7 @@ module.exports = {
 		
 		await interaction.reply({ components: [buttonRow] });
 
-		console.log(`BUTTON ___ ${interaction.member.displayName} created a button to grant the ${role1.name} role.`)
+		console.log(`${timestamp} BUTTON ___ ${interaction.member.displayName} created a button to grant the ${role1.name} role.`)
 
 		const collector = await interaction.channel.createMessageComponentCollector();
 
@@ -56,7 +62,7 @@ module.exports = {
 				member.roles.add(role1);
 				i.reply({ content: `${success1}`, ephemeral: true });
 				
-				console.log(`BUTTON ___ ${member.displayName} was successfully granted the ${role1.name} role.`);
+				console.log(`${timestamp} BUTTON ___ ${member.displayName} was successfully granted the ${role1.name} role.`);
 			};
 		})
 	}

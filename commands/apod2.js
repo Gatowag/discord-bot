@@ -22,14 +22,17 @@ module.exports = {
 		console.log(`${timestamp} DIAGNOSTIC ___ date determined: ${date}`);
 
 		const u = interaction.member.displayName;
-		const d = new Date().toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		console.log(`${timestamp} DIAGNOSTIC ___ variables determined: u (${u}), d(${d}), timestamp(${timestamp})`);
 
 		let chan = interaction.channel;
 		
 		console.log(`${timestamp} DIAGNOSTIC ___ channel determined: ${chan}`);
+		const timezoneOffset = -5;
+		const dBase = new Date();
+		dBase.setHours(dBase.getHours() + timezoneOffset);
+		const d = dBase.toISOString();
+		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		try {
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${d}`);
