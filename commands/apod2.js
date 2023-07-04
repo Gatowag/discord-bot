@@ -21,7 +21,7 @@ module.exports = {
 		const d = new Date().toISOString();
 		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
-		let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
+		let chan = interaction.channel;
 
 		try {
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${d}`);
@@ -42,7 +42,7 @@ module.exports = {
 						.setColor(0x0165b3)
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 					
-					await testChannel.send({ embeds: [embed] });
+					await chan.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
 					console.log(`${timestamp} DIAGNOSTIC ___ ${data}`);
 
@@ -61,7 +61,7 @@ module.exports = {
 						})
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 										
-					await testChannel.send({ embeds: [embed] });
+					await chan.send({ embeds: [embed] });
 					console.log(`${timestamp} APOD ___ ${u} sent embed w/o image but with copyright`);
 				}
 
@@ -79,7 +79,7 @@ module.exports = {
 						inline: false,
 					});
 			
-				await testChannel.send({ embeds: [embed] });
+				await chan.send({ embeds: [embed] });
 				console.log(`${timestamp} APOD ___ ${u} sent embed with video placeholder but no copyright`);
 				
 			// checks if the post type is an image and not copyrighted
@@ -91,7 +91,7 @@ module.exports = {
 					.setImage(`${data.url}`)
 					.setColor(0x0165b3);
 			
-				await testChannel.send({ embeds: [embed] });
+				await chan.send({ embeds: [embed] });
 				console.log(`${timestamp} APOD ___ ${u} sent embed with image but no copyright`);
 			}
 		} catch (error) {
