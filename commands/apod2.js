@@ -12,16 +12,13 @@ module.exports = {
 				.setName('date')
 				.setDescription('YYYY-MM-DD of the desired APOD')),
 	
-	run: async ({ client, interaction }) => {
+	run: async ({ interaction }) => {
 
-
-		const date = interaction.options.get('date')?.value;
-		(date == null) ? (d = "") : (d = `&date=${date}`);
-
+		const dateIn = interaction.options.get('date')?.value;
+		(dateIn == null) ? (dateOut = "") : (dateOut = `&date=${dateIn}`);
 
 		const u = interaction.member.displayName;
-
-		let chan = interaction.channel;
+		const chan = interaction.channel;
 		
 		const timezoneOffset = -5;
 		const dBase = new Date();
@@ -30,7 +27,7 @@ module.exports = {
 		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		try {
-			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${d}`);
+			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${dateOut}`);
 			let data = await apodResponse.body.json();
 
 			let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2, 4) + data.date.slice(5, 7) + data.date.slice(8)}.html`;
@@ -38,6 +35,7 @@ module.exports = {
 			// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
 			// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
 			if ('copyright' in data) {
+
 				// checks if the post type is image & copyrighted
 				if (data.media_type === 'image') {
 					let embed = new EmbedBuilder()
