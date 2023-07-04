@@ -26,6 +26,8 @@ const client = new Client({
 		console.log(`${timestamp} BOOT ___ Connected to DB.`);
 
 		client.login(process.env.TOKEN);
+		console.log(`${timestamp} BOOT ___ Logged in.`);
+
 	} catch (error) {
 		console.log(`${timestamp} ERROR ___ ${error}`);
 	}
