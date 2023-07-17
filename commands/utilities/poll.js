@@ -48,6 +48,9 @@ module.exports = {
 		const u = interaction.member.displayName;
 
 		try {
+			// notifies user "<application> is thinking..." and prevents error message that application did not respond
+			let quiet = await interaction.deferReply();
+
 			// get inputs
 			let c1 = interaction.options.get('choice1')?.value;
 			let c2 = interaction.options.get('choice2')?.value;
@@ -139,6 +142,9 @@ module.exports = {
 				buttonArr[0].setLabel('Yes').setStyle(ButtonStyle.Success);
 				buttonArr[1].setLabel('No').setStyle(ButtonStyle.Danger);
 			};
+
+			// removes thinking message
+			quiet.delete();
 			
 			// update the voting message with the completed embed and buttons
 			await pollVoting.edit({ embeds: [embedVoting], components: [buttonRow] });

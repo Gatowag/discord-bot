@@ -95,6 +95,9 @@ module.exports = {
 		const u = interaction.member.displayName;
 
 		try {
+			// notifies user "<application> is thinking..." and prevents error message that application did not respond
+			let quiet = await interaction.deferReply();
+
 			//get inputs
 			const eTitle = interaction.options.get('title').value;
 			const eUrl = interaction.options.get('url').value;
@@ -147,6 +150,9 @@ module.exports = {
 			};
 
 			await interaction.channel.send({ embeds: [embed], files: [file] });
+
+			// removes thinking message
+			quiet.delete();
 
 			console.log(`${timestamp()} EMBED ___ ${u} successfully created an embed.`);
 
