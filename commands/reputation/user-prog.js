@@ -1,7 +1,8 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 const timestamp = require('../../utils/timestamp');
+const progressBar = require('../../utils/repProgress');
 
 module.exports = {
 	deleted: false,
@@ -15,7 +16,7 @@ module.exports = {
 				.setRequired(true)),
 	
 	run: async ({ interaction }) => {
-		
+
 		const userVal = interaction.options.get('user').value;
 		const u = await interaction.guild.members.fetch(userVal);
 
@@ -24,30 +25,36 @@ module.exports = {
 			guildId: interaction.guild.id,
 		};
 
-		const channelUnlocks = [
-			6,
-			9,
-			4,
-			3,
-			1
-		];
+		const channelUnlocks = [ 6, 9, 4, 3, 1 ];
 
 		try {
 			const level = await Level.findOne(query);
 
 			if (level) {
-				const perc = Math.round((level.rep / levelScaling(level.level))*100)/100;
-				const progressFill = '▨';
-				const progressEmpty = '▢';
-				const progressBar = `${progressFill.repeat(Math.round(perc * 20))}${progressEmpty.repeat(20 - Math.round(perc * 20))}`;
-				let i = level.level;
+				const stats = {
+					lvl: level.level,
+					threshold: levelScaling(level.level),
+					rep: level.rep,
+					percent: Math.round((level.rep / levelScaling(level.level)) * 100) / 100 };
+				let i = stats.lvl;
 				let unlocksRemain = 0;
 				while (i++ < channelUnlocks.length - 1) {
 					unlocksRemain += channelUnlocks[i];
 				};
+
+				const embed = new EmbedBuilder()
+					.setTitle(`${u.displayName}'s reputation stats`)
+					.setDescription(`\`\`\` ${progressBar(stats.threshold, stats.rep)} \n ${Math.floor(stats.percent * 100)}% to level ${stats.lvl + 1} \n ${stats.rep} / ${stats.threshold} \`\`\``)
+					.setColor('Gold')
+					.setThumbnail(u.displayAvatarURL())
+					.addFields({
+						name: 'User Info',
+						value: `${u}: ${u.id}`,
+						inline: false,
+					});
 	
 				interaction.reply({
-					content: `### (${u}) ${u.displayName}'s progression stats\nThey are ${Math.floor(perc*100)}% (${level.rep}/${levelScaling(level.level)}) to level ${level.level+1}.\n${progressBar}`,
+					embeds: [embed],
 					ephemeral: false
 				});
 
@@ -72,6 +79,7 @@ module.exports = {
 
 		} catch (error) {
 			console.log(`${timestamp()} ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
+			return;
 		}
 	},
 }
