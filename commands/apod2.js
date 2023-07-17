@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
-const timestamp = require('../../utils/timestamp');
+const timestamp = require('../utils/timestamp');
 require('dotenv').config();
 
 module.exports = {
