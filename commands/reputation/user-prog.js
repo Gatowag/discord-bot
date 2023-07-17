@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
+const timestamp = require('../../utils/timestamp');
 
 module.exports = {
 	deleted: false,
@@ -14,14 +15,9 @@ module.exports = {
 				.setRequired(true)),
 	
 	run: async ({ interaction }) => {
+		
 		const userVal = interaction.options.get('user').value;
 		const u = await interaction.guild.members.fetch(userVal);
-
-		const timezoneOffset = -5;
-		const dBase = new Date();
-		dBase.setHours(dBase.getHours() + timezoneOffset);
-		const d = dBase.toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		const query = {
 			userId: u.id,
@@ -55,10 +51,10 @@ module.exports = {
 					ephemeral: false
 				});
 
-				console.log(`${timestamp} REP CHECK ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
+				console.log(`${timestamp()} REP CHECK ___ ${interaction.member.displayName} requested a progression check on ${u.displayName} (${u}).`);
 
 			} else {
-				console.log(`${timestamp} DATABASE ___ creating new entry for ${u.displayName}`);
+				console.log(`${timestamp()} DATABASE ___ creating new entry for ${u.displayName}`);
 
 				const newLevel = new Level({
 					userId: u.id,
@@ -75,7 +71,7 @@ module.exports = {
 			
 
 		} catch (error) {
-			console.log(`${timestamp} ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
+			console.log(`${timestamp()} ERROR ___ couldn't determine ${u.displayName}'s progress: ${error}`);
 		}
 	},
 }

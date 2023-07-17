@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const timestamp = require('../../utils/timestamp');
 
 module.exports = {
 	deleted: false,
@@ -92,11 +93,6 @@ module.exports = {
 	run: async ({ interaction }) => {
 
 		const u = interaction.member.displayName;
-		const timezoneOffset = -5;
-		const dBase = new Date();
-		dBase.setHours(dBase.getHours() + timezoneOffset);
-		const d = dBase.toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		try {
 			//get inputs
@@ -152,10 +148,10 @@ module.exports = {
 
 			await interaction.channel.send({ embeds: [embed], files: [file] });
 
-			console.log(`${timestamp} EMBED ___ ${u} successfully created an embed.`);
+			console.log(`${timestamp()} EMBED ___ ${u} successfully created an embed.`);
 
 		} catch (error) {
-			console.log(`${timestamp} ERROR ___ couldn't complete embed for ${u}: ${error}`);
+			console.log(`${timestamp()} ERROR ___ couldn't complete embed for ${u}: ${error}`);
 		}
 	},
 };

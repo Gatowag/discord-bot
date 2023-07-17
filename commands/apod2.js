@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
+const timestamp = require('../../utils/timestamp');
 require('dotenv').config();
 
 module.exports = {
@@ -19,12 +20,6 @@ module.exports = {
 
 		const u = interaction.member.displayName;
 		const chan = interaction.channel;
-
-		const timezoneOffset = -5;
-		const dBase = new Date();
-		dBase.setHours(dBase.getHours() + timezoneOffset);
-		const d = dBase.toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		try {
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${dateOut}`);
@@ -47,7 +42,7 @@ module.exports = {
 						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
 					
 					await chan.send({ embeds: [embed] });
-					console.log(`${timestamp} APOD ___ ${u} sent embed with image and copyright`);
+					console.log(`${timestamp()} APOD ___ ${u} sent embed with image and copyright`);
 
 				// sending a different message if the post is not an image & copyrighted
 				} else {
@@ -65,7 +60,7 @@ module.exports = {
 						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
 										
 					await chan.send({ embeds: [embed] });
-					console.log(`${timestamp} APOD ___ ${u} sent embed w/o image but with copyright`);
+					console.log(`${timestamp()} APOD ___ ${u} sent embed w/o image but with copyright`);
 				}
 
 			// checks if the post type is a video and not copyrighted
@@ -83,7 +78,7 @@ module.exports = {
 					});
 			
 				await chan.send({ embeds: [embed] });
-				console.log(`${timestamp} APOD ___ ${u} sent embed with video placeholder but no copyright`);
+				console.log(`${timestamp()} APOD ___ ${u} sent embed with video placeholder but no copyright`);
 				
 			// checks if the post type is an image and not copyrighted
 			} else if (data.media_type === 'image') {
@@ -95,10 +90,10 @@ module.exports = {
 					.setColor(0x0165b3);
 			
 				await chan.send({ embeds: [embed] });
-				console.log(`${timestamp} APOD ___ ${u} sent embed with image but no copyright`);
+				console.log(`${timestamp()} APOD ___ ${u} sent embed with image but no copyright`);
 			}
 		} catch (error) {
-			console.log(`${timestamp} ERROR ___ ${u}'s APOD request failed unexpectedly: ${error}`);
+			console.log(`${timestamp()} ERROR ___ ${u}'s APOD request failed unexpectedly: ${error}`);
 		};
 	}
 };

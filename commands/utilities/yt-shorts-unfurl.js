@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const timestamp = require('../../utils/timestamp');
 
 module.exports = {
 	deleted: false,
@@ -17,17 +18,12 @@ module.exports = {
 				.setRequired(false)),
 	
 	run: ({ interaction }) => {
+		
 		const u = interaction.member.displayName;
 		const link = interaction.options.get('link').value;
 		const long = interaction.options.get('lengthy')?.value;
 		const IDstart = link.indexOf('shorts/');
 		const ID = link.slice(IDstart + 7);
-
-		const timezoneOffset = -5;
-		const dBase = new Date();
-		dBase.setHours(dBase.getHours() + timezoneOffset);
-		const d = dBase.toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		try {
 			if (long == true) {
@@ -35,17 +31,17 @@ module.exports = {
 					content: `https://www.youtube.com/watch?v=${ID}`,
 					ephemeral: true
 				});
-				console.log(`${timestamp} UTIL ___ ${u} converted a YT short link (lengthened)`);
+				console.log(`${timestamp()} UTIL ___ ${u} converted a YT short link (lengthened)`);
 			} else {
 				interaction.reply({
 					content: `https://youtu.be/${ID}`,
 					ephemeral: true
 				});
-				console.log(`${timestamp} UTIL ___ ${u} converted a YT short link`);
+				console.log(`${timestamp()} UTIL ___ ${u} converted a YT short link`);
 			};
 
 		} catch (error) {
-			console.log(`${timestamp} ERROR ___ couldn't convert to normal YT link: ${error}`);
+			console.log(`${timestamp()} ERROR ___ couldn't convert to normal YT link: ${error}`);
 		}
 	},
 }

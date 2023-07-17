@@ -1,19 +1,14 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
+const timestamp = require('../../utils/timestamp');
 var cron = require('node-cron');
 
 module.exports = async (client) => {
 
 	let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
-
-	const timezoneOffset = -5;
-	const dBase = new Date();
-	dBase.setHours(dBase.getHours() + timezoneOffset);
-	const d = dBase.toISOString();
-	const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 	
-	console.log(`${timestamp} BOOT ___ Scheduled APOD to post every day at 10:00 US Central.`);
+	console.log(`${timestamp()} BOOT ___ Scheduled APOD to post every day at 10:00 US Central.`);
 
 	try {
 		cron.schedule('0 15 * * *', async () => {
@@ -36,7 +31,7 @@ module.exports = async (client) => {
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 					
 					await testChannel.send({ embeds: [embed] });
-					console.log(`${timestamp} APOD ___ embed sent with image and copyright`);
+					console.log(`${timestamp()} APOD ___ embed sent with image and copyright`);
 
 				// sending a different message if the post is not an image & copyrighted
 				} else {
@@ -54,7 +49,7 @@ module.exports = async (client) => {
 						.setFooter({ text: `©️ ${data.copyright}` }); // please keep this due to NASA's restrictions
 										
 					await testChannel.send({ embeds: [embed] });
-					console.log(`${timestamp} APOD ___ embed sent w/o image but with copyright`);
+					console.log(`${timestamp()} APOD ___ embed sent w/o image but with copyright`);
 				}
 
 			// checks if the post type is a video and not copyrighted
@@ -72,7 +67,7 @@ module.exports = async (client) => {
 					});
 			
 				await testChannel.send({ embeds: [embed] });
-				console.log(`${timestamp} APOD ___ embed sent with video placeholder but no copyright`);
+				console.log(`${timestamp()} APOD ___ embed sent with video placeholder but no copyright`);
 				
 			// checks if the post type is an image and not copyrighted
 			} else if (data.media_type === 'image') {
@@ -84,10 +79,10 @@ module.exports = async (client) => {
 					.setColor(0x0165b3);
 			
 				await testChannel.send({ embeds: [embed] });
-				console.log(`${timestamp} APOD ___ embed sent with image but no copyright`);
+				console.log(`${timestamp()} APOD ___ embed sent with image but no copyright`);
 			}
 		});
 	} catch (error) {
-		console.log(`${timestamp} ERROR ___ Cron failed unexpectedly: ${error}`);
+		console.log(`${timestamp()} ERROR ___ Cron failed unexpectedly: ${error}`);
 	};
 };

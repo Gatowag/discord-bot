@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
+const timestamp = require('../../utils/timestamp');
 
 module.exports = {
 	deleted: false,
@@ -19,16 +20,11 @@ module.exports = {
 			.setRequired(true)),
 	
 	run: async ({ interaction }) => {
+		
 		const userVal = interaction.options.get('user').value;
 		const userName = await interaction.guild.members.fetch(userVal);
 		const amount = interaction.options.get('amount').value;
-
 		const u = interaction.member.displayName;
-		const timezoneOffset = -5;
-		const dBase = new Date();
-		dBase.setHours(dBase.getHours() + timezoneOffset);
-		const d = dBase.toISOString();
-		const timestamp = `${d.slice(0, 10)} | ${d.slice(11, 19)} |`;
 
 		const query = {
 				userId: userVal,
@@ -49,17 +45,17 @@ module.exports = {
 					content: `You've modified ${userName}'s reputation amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}.` + defLvlUp,
 					ephemeral: false
 				});
-				console.log(`${timestamp} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
+				console.log(`${timestamp()} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 
 				await level.save().catch((e) => {
-					console.log(`${timestamp} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
+					console.log(`${timestamp()} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
 					return;
 				})
 			}
 
 			// if (!level)
 			else {
-				console.log(`${timestamp} DATABASE ___ creating new entry for ${u}`);
+				console.log(`${timestamp()} DATABASE ___ creating new entry for ${u}`);
 				
 				const newLevel = new Level({
 					userId: userVal,
@@ -74,10 +70,10 @@ module.exports = {
 					content: `${userName} has been initialized in the database and you've modified their reputation amount from 1 to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp,
 					ephemeral: false
 				});
-				console.log(`${timestamp} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
+				console.log(`${timestamp()} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 			}
 		} catch (error) {
-			console.log(`${timestamp} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
+			console.log(`${timestamp()} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
 		}
 
 
