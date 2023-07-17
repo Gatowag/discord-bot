@@ -31,25 +31,18 @@ module.exports = {
 
 			(!dateIn) ? (dateOut = "") : (dateOut = `&date=${dateIn}`);
 
-			let msDiff;
 			if (rand) {
 				const dEnd = new Date();
 				const dStart = new Date("1995-06-16");
 				let dRand = new Date(+dStart + Math.random() * (dEnd - dStart));
 				let dISO = dRand.toISOString();
-				msDiff = Math.abs(dEnd - dRand) * -1;
-				console.log(`dISO: ${dISO}`);
 				dateOut = `&date=${dISO.slice(0, 10)}`;
 			};
-
-			console.log(`msDiff: ${msDiff}`);
 			
 			let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${dateOut}`);
 			let data = await apodResponse.body.json();
 
 			let permaLink = `https://apod.nasa.gov/apod/ap${data.date.slice(2, 4) + data.date.slice(5, 7) + data.date.slice(8)}.html`;
-
-			console.log(data.date);
 
 			// code adapted from Raxlitude's Discord Daily NASA APOD Posts on Autocode
 			// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
@@ -63,8 +56,7 @@ module.exports = {
 						.setDescription(data.explanation)
 						.setImage(`${data.url}`)
 						.setColor(0x0165b3)
-						.setTimestamp(Date.now() + msDiff)
-						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}` }); // please keep this due to NASA's restrictions
 					
 					await quiet.edit({ embeds: [embed] });
 					console.log(`${timestamp()} APOD ___ ${u} sent embed with image and copyright`);
@@ -82,8 +74,7 @@ module.exports = {
 							value: data.url,
 							inline: false,
 						})
-						.setTimestamp(Date.now() + msDiff)
-						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}` }); // please keep this due to NASA's restrictions
 										
 					await quiet.edit({ embeds: [embed] });
 					console.log(`${timestamp()} APOD ___ ${u} sent embed w/o image but with copyright`);
@@ -97,12 +88,12 @@ module.exports = {
 					.setDescription(data.explanation)
 					.setImage(`${data.thumbnail}`)
 					.setColor(0x0165b3)
-					.setTimestamp(Date.now() + msDiff)
 					.addFields({
 						name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
 						value: data.url,
 						inline: false,
-					});
+					})
+					.setFooter({ text: `${data.date}` });
 			
 				await quiet.edit({ embeds: [embed] });
 				console.log(`${timestamp()} APOD ___ ${u} sent embed with video placeholder but no copyright`);
@@ -115,7 +106,7 @@ module.exports = {
 					.setDescription(data.explanation)
 					.setImage(`${data.url}`)
 					.setColor(0x0165b3)
-					.setTimestamp(Date.now() + msDiff);
+					.setFooter({ text: `${data.date}` });
 			
 				await quiet.edit({ embeds: [embed] });
 				console.log(`${timestamp()} APOD ___ ${u} sent embed with image but no copyright`);
