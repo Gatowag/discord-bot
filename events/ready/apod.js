@@ -28,7 +28,7 @@ module.exports = async (client) => {
 						.setDescription(data.explanation)
 						.setImage(`${data.url}`)
 						.setColor(0x0165b3)
-						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}` }); // please keep this due to NASA's restrictions
 					
 					await testChannel.send({ embeds: [embed] });
 					console.log(`${timestamp()} APOD ___ embed sent with image and copyright`);
@@ -46,7 +46,7 @@ module.exports = async (client) => {
 							value: data.url,
 							inline: false,
 						})
-						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}` }); // please keep this due to NASA's restrictions
+						.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}` }); // please keep this due to NASA's restrictions
 										
 					await testChannel.send({ embeds: [embed] });
 					console.log(`${timestamp()} APOD ___ embed sent w/o image but with copyright`);
@@ -64,7 +64,8 @@ module.exports = async (client) => {
 						name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
 						value: data.url,
 						inline: false,
-					});
+					})
+					.setFooter({ text: `${data.date}` });
 			
 				await testChannel.send({ embeds: [embed] });
 				console.log(`${timestamp()} APOD ___ embed sent with video placeholder but no copyright`);
@@ -76,7 +77,8 @@ module.exports = async (client) => {
 					.setURL(permaLink)
 					.setDescription(data.explanation)
 					.setImage(`${data.url}`)
-					.setColor(0x0165b3);
+					.setColor(0x0165b3)
+					.setFooter({ text: `${data.date}` });
 			
 				await testChannel.send({ embeds: [embed] });
 				console.log(`${timestamp()} APOD ___ embed sent with image but no copyright`);
