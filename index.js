@@ -24,7 +24,7 @@ const client = new Client({
 
 	try {
 		await mongoose.connect(process.env.MONGODB_URI);
-		console.log(`${timestamp} BOOT  ▢  Successfully connected to database.`);
+		console.log(`\n${timestamp} BOOT  ▢  Successfully connected to database.`);
 
 		client.login(process.env.TOKEN);
 		console.log(`${timestamp} BOOT  |  Successfully logged in to Discord.`);
