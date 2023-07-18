@@ -24,13 +24,13 @@ const client = new Client({
 
 	try {
 		await mongoose.connect(process.env.MONGODB_URI);
-		console.log(`${timestamp} BOOT ___ Successfully connected to database.`);
+		console.log(`${timestamp} BOOT  ▢  Successfully connected to database.`);
 
 		client.login(process.env.TOKEN);
-		console.log(`${timestamp} BOOT ___ Successfully logged in to Discord.`);
+		console.log(`${timestamp} BOOT  |  Successfully logged in to Discord.`);
 
 	} catch (error) {
-		console.log(`${timestamp} ERROR ___ Couldn't log in properly: ${error}`);
+		console.log(`${timestamp} ERROR !!! Couldn't log in properly: ${error}`);
 	}
 })();
 

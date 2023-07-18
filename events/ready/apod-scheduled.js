@@ -8,7 +8,7 @@ module.exports = async (client) => {
 
 	let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 	
-	console.log(`${timestamp()} BOOT ___ Scheduled APOD to post every day at 10:00 US Central.`);
+	console.log(`${timestamp()} BOOT  |  Scheduled APOD to post every day at 10:00 US Central.`);
 
 	try {
 		cron.schedule('0 15 * * *', async () => {

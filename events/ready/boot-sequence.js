@@ -3,7 +3,7 @@ const timestamp = require('../../utils/timestamp');
 
 module.exports = (client) => {
 
-	console.log(`${timestamp()} BOOT ___ ${client.user.tag} is online.`);
+	console.log(`${timestamp()} BOOT  ▨  ${client.user.tag} is online.\n`);
 
 	client.user.setActivity({
 		name: 'Emergent Beacon',
