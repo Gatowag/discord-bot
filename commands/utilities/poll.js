@@ -144,7 +144,7 @@ module.exports = {
 			};
 
 			// removes thinking message
-			quiet.delete();
+			await quiet.delete();
 			
 			// update the voting message with the completed embed and buttons
 			await pollVoting.edit({ embeds: [embedVoting], components: [buttonRow] });
