@@ -50,7 +50,7 @@ module.exports = {
 
 		try {
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
-			let quiet = await interaction.deferReply({ ephemeral: true });
+			let loading = await interaction.deferReply({ ephemeral: true });
 
 			diagnostics && console.log(`DIAG  ▢  init reply sent`);
 
@@ -162,7 +162,7 @@ module.exports = {
 			diagnostics && console.log(`DIAG  |  voting embed updated`);
 
 			// removes thinking message
-			await quiet.delete();
+			await loading.delete();
 
 			diagnostics && console.log(`DIAG  |  init reply deleted\nDIAG  ▨  finished`);
 

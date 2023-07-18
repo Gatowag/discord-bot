@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
 		diagnostics && console.log(`DIAG  ▢  new vote detected, starting poll update`);
 
 		// tell discord to chill out
-		let quiet = await interaction.deferReply({ ephemeral: true });
+		let loading = await interaction.deferReply({ ephemeral: true });
 
 		// grab database data, poll message info, and pressed button info
 		const targetPoll = await pollData.findOne({ pollID });
@@ -61,7 +61,7 @@ module.exports = async (interaction) => {
 		if (voteCheck.filter((v) => (v > -1)).length > 0) {
 			// if they're double-voting, notify user and discontinue
 			if (voteCheck[voteArr] > -1) {
-				await quiet.edit(`You can't vote for this option more than once.`);
+				await loading.edit(`You can't vote for this option more than once.`);
 				diagnostics && console.log(`DIAG  ▨  double vote detected, discontinuing\n`);
 				return;
 			// if they're changing their vote, notify user and remove their previous vote
@@ -70,7 +70,7 @@ module.exports = async (interaction) => {
 					if (voteCheck[i] > -1) {
 						tPoll[i].splice(voteCheck[i], 1);
 						voteTotals[i] += -1;
-						await quiet.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+						await loading.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
 						break;
 					}
 				};
@@ -78,9 +78,10 @@ module.exports = async (interaction) => {
 			};
 		// run if the user is voting in the poll for the first time
 		} else {
+			diagnostics && console.log(`DIAG  |  new vote detected, attempting to notify user`);
 			// notify the user that the button worked and verify their choice
-			await quiet.edit(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
-			diagnostics && console.log(`DIAG  |  new vote detected, notified user`);
+			await loading.edit(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+			diagnostics && console.log(`DIAG  |  notified user`);
 		};
 
 		// store the user's vote
