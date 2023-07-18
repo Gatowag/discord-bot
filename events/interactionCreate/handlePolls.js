@@ -2,6 +2,7 @@ const { Interaction } = require('discord.js');
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
+const diagnostics = true;
 
 /**
  * 
@@ -19,8 +20,10 @@ module.exports = async (interaction) => {
 		if (!type || !pollID || !action) return;
 		if (type !== 'poll') return;
 
+		diagnostics && console.log(`DIAG  ▢  new vote detected, starting poll update`);
+
 		// tell discord to chill out
-		await interaction.deferReply({ ephemeral: true });
+		let quiet = await interaction.deferReply({ ephemeral: true });
 
 		// grab database data, poll message info, and pressed button info
 		const targetPoll = await pollData.findOne({ pollID });
@@ -52,11 +55,14 @@ module.exports = async (interaction) => {
 			tPoll[3].length,
 		];
 
+		diagnostics && console.log(`DIAG  |  data has been assigned, starting vote checks`);
+
 		// run if the user has voted in this poll before
 		if (voteCheck.filter((v) => (v > -1)).length > 0) {
 			// if they're double-voting, notify user and discontinue
 			if (voteCheck[voteArr] > -1) {
-				await interaction.editReply(`You can't vote for this option more than once.`);
+				await quiet.edit(`You can't vote for this option more than once.`);
+				diagnostics && console.log(`DIAG  ▨  double vote detected, discontinuing\n`);
 				return;
 			// if they're changing their vote, notify user and remove their previous vote
 			} else {
@@ -64,15 +70,17 @@ module.exports = async (interaction) => {
 					if (voteCheck[i] > -1) {
 						tPoll[i].splice(voteCheck[i], 1);
 						voteTotals[i] += -1;
-						await interaction.editReply(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+						await quiet.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
 						break;
 					}
 				};
+				diagnostics && console.log(`DIAG  |  previous votes removed`);
 			};
 		// run if the user is voting in the poll for the first time
 		} else {
 			// notify the user that the button worked and verify their choice
-			await interaction.editReply(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+			await quiet.edit(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+			diagnostics && console.log(`DIAG  |  new vote detected, notified user`);
 		};
 
 		// store the user's vote
@@ -82,13 +90,19 @@ module.exports = async (interaction) => {
 		// update the database
 		await targetPoll.save();
 
+		diagnostics && console.log(`DIAG  |  data has been stored and saved to database`);
+
 		// update every field in the voting embed to reflect new vote count
 		for (f = 0; f < optionTotal; f++) {
 			targetMsgEmbed.fields[f].value = pollProgress(f, voteTotals);
 		};
 
+		diagnostics && console.log(`DIAG  |  embed fields updated`);
+
 		// update the voting embed in the original poll message
 		await targetMsg.edit({ embeds: [targetMsgEmbed] });
+
+		diagnostics && console.log(`DIAG  |  voting embed updated\nDIAG  ▨  finished\n`);
 
 		// discontinue
 		return;

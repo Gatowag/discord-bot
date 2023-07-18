@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
+const diagnostics = true;
 
 module.exports = {
 	deleted: false,
@@ -49,7 +50,9 @@ module.exports = {
 
 		try {
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
-			let quiet = await interaction.deferReply();
+			let quiet = await interaction.deferReply({ ephemeral: true });
+
+			diagnostics && console.log(`DIAG ___ init reply sent`);
 
 			// get inputs
 			let c1 = interaction.options.get('choice1')?.value;
@@ -62,6 +65,8 @@ module.exports = {
 
 			// set up variables within which we build stuff
 			let pollPrompt, pollVoting, embedPrompt, embedVoting, descript;
+
+			diagnostics && console.log(`DIAG ___ inputs and variables assigned`);
 			
 			// attach extra info to description field, if present
 			if (info) {
@@ -94,6 +99,8 @@ module.exports = {
 				embedVoting = new EmbedBuilder()
 					.setColor(0x466df1);
 				
+				diagnostics && console.log(`DIAG ___ image poll detected, both embeds sent, image embed complete`);
+				
 			// run as text poll (1 embed)
 			} else {
 				// send msg as placeholder for voting
@@ -108,6 +115,8 @@ module.exports = {
 						iconURL: interaction.user.displayAvatarURL({ size: 256 })})
 					.setColor(0x466df1)
 					.setFooter({ text: `Only your latest vote is counted.` });
+				
+				diagnostics && console.log(`DIAG ___ text poll detected, voting embed sent`);
 			};
 
 			// fill data in the poll schema to ready for database
@@ -120,6 +129,8 @@ module.exports = {
 
 			// send data to database
 			await newPoll.save();
+
+			diagnostics && console.log(`DIAG ___ data has been saved to database`);
 
 			// prep for button creation
 			const optionArr = [c1, c2, c3, c4];
@@ -143,13 +154,21 @@ module.exports = {
 				buttonArr[1].setLabel('No').setStyle(ButtonStyle.Danger);
 			};
 
-			// removes thinking message
-			await quiet.delete();
+			diagnostics && console.log(`DIAG ___ buttons created`);
 			
 			// update the voting message with the completed embed and buttons
 			await pollVoting.edit({ embeds: [embedVoting], components: [buttonRow] });
 
+			diagnostics && console.log(`DIAG ___ voting embed updated`);
+
+			// removes thinking message
+			await quiet.delete();
+
+			diagnostics && console.log(`DIAG ___ init reply deleted`);
+
 			console.log(`${timestamp()} POLL ___ ${u} successfully created a poll: ${question}`);
+
+			return;
 		} catch (error) {
 			console.log(`${timestamp()} ERROR ___ couldn't complete poll for ${u}: ${error}`);
 		}
