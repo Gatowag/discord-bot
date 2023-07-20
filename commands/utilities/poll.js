@@ -47,12 +47,13 @@ module.exports = {
 	
 	run: async ({ interaction }) => {
 		const u = interaction.member.displayName;
+		diagnostics && console.log(`\nDIAG  ▢  new poll started`);
 
 		try {
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
 			let loading = await interaction.deferReply({ ephemeral: true });
 
-			diagnostics && console.log(`DIAG  ▢  init reply sent`);
+			diagnostics && console.log(`DIAG  |  init reply sent`);
 
 			// get inputs
 			let c1 = interaction.options.get('choice1')?.value;
@@ -164,7 +165,7 @@ module.exports = {
 			// removes thinking message
 			await loading.delete();
 
-			diagnostics && console.log(`DIAG  |  init reply deleted\nDIAG  ▨  finished`);
+			diagnostics && console.log(`DIAG  |  init reply deleted\nDIAG  ▨  finished\n`);
 
 			console.log(`${timestamp()} POLL ___ ${u} successfully created a poll: ${question}`);
 
