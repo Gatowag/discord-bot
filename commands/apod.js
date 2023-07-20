@@ -2,6 +2,7 @@ require('dotenv').config();
 const { SlashCommandBuilder } = require('discord.js');
 const timestamp = require('../utils/timestamp');
 const apodEmbed = require('../utils/apodEmbed');
+const diagnostics = false;
 
 module.exports = {
 	deleted: false,
@@ -23,7 +24,10 @@ module.exports = {
 		const rand = interaction.options.get('random')?.value;
 		const u = interaction.member.displayName;
 
+		diagnostics && console.log(`\nDIAG  ▢  attempting to start apod post`);
+
 		try {
+			diagnostics && console.log(`DIAG  |  creating deferred reply`);
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
 			let quiet = await interaction.deferReply();
 
@@ -33,7 +37,7 @@ module.exports = {
 			console.log(`${timestamp()} APOD  ▨  ${u} successfully sent apod post`);
 
 		} catch (error) {
-			console.log(`${timestamp()} ERROR ___ ${u}'s APOD request failed unexpectedly: ${error}`);
+			console.log(`${timestamp()} ERROR !!! ${u}'s APOD request failed: ${error}`);
 		};
 	}
 };
