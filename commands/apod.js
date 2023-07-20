@@ -11,12 +11,15 @@ module.exports = {
 		.setDescription('Generate an embed from NASA\'s Astronomy Picture of the Day.')
 		.addStringOption((option) =>
 			option
-				.setName('date')
-				.setDescription('YYYY-MM-DD of the desired APOD (must be after 1995-06-16)'))
-		.addBooleanOption((option) =>
-			option
 				.setName('random')
-				.setDescription('will choose an APOD at random')),
+				.setDescription('will choose an APOD at random')
+				.addChoices(
+					{ name: 'True', value: 'true' },
+				))
+		.addStringOption((option) =>
+			option
+				.setName('date')
+				.setDescription('YYYY-MM-DD of the desired APOD (must be after 1995-06-16)')),
 	
 	run: async ({ interaction }) => {
 
