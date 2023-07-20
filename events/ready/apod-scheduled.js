@@ -11,14 +11,14 @@ module.exports = async (client) => {
 	console.log(`${timestamp()} BOOT  |  Scheduled APOD to post every day at 22:00 US Central.`);
 
 	try {
-		cron.schedule('0 10 * * *', async () => {
+		cron.schedule('0 15 * * *', async () => {
 			let embed = await apodEmbed();
 			
 			await apodChannel.send({ embeds: [embed] });
 			console.log(`${timestamp()} APOD  ▨  successfully posted daily morning post`);
 		});
 		
-		cron.schedule('0 22 * * *', async () => {
+		cron.schedule('0 3 * * *', async () => {
 			let embed = await apodEmbed(null, true);
 			
 			await apodChannel.send({ embeds: [embed] });
