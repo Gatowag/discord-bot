@@ -63,9 +63,21 @@ module.exports = async (interaction) => {
 
 			// if they're double-voting, notify user and discontinue
 			if (voteCheck[voteArr] > -1) {
-				await loading.edit(`You can't vote for this option more than once.`);
-				diagnostics && console.log(`DIAG  ▨  double vote detected, discontinuing\n`);
-				return;
+				diagnostics && console.log(`DIAG  |  double-vote detected`);
+
+				// remove their previous vote and subtract from the vote count
+				for (i = 0; i < optionTotal; i++) {
+					if (voteCheck[i] > -1) {
+						tPoll[i].splice(voteCheck[i], 1);
+						voteTotals[i] += -1;
+						break;
+					}
+				};
+				diagnostics && console.log(`DIAG  |  previous vote removed`);
+
+				await loading.edit(`You've retracted your vote from the poll.`);
+				diagnostics && console.log(`DIAG  ▨  notified user, discontinuing\n`);
+
 			// if they're changing their vote, notify user and remove their previous vote
 			} else {
 				diagnostics && console.log(`DIAG  |  changed vote detected, removing previous vote`);
@@ -75,11 +87,16 @@ module.exports = async (interaction) => {
 					if (voteCheck[i] > -1) {
 						tPoll[i].splice(voteCheck[i], 1);
 						voteTotals[i] += -1;
-						await loading.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
 						break;
 					}
 				};
-				diagnostics && console.log(`DIAG  |  previous votes removed`);
+
+				await loading.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
+				diagnostics && console.log(`DIAG  |  previous vote removed`);
+
+				// store the user's vote
+				tPoll[voteArr].push(interaction.user.id);
+				voteTotals[voteArr] += 1;
 			};
 
 		// run if the user is voting in the poll for the first time
@@ -88,11 +105,11 @@ module.exports = async (interaction) => {
 			// notify the user that the button worked and verify their choice
 			await loading.edit(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
 			diagnostics && console.log(`DIAG  |  notified user`);
-		};
 
-		// store the user's vote
-		tPoll[voteArr].push(interaction.user.id);
-		voteTotals[voteArr] += 1;
+			// store the user's vote
+			tPoll[voteArr].push(interaction.user.id);
+			voteTotals[voteArr] += 1;
+		};
 
 		// update the database
 		await targetPoll.save();
