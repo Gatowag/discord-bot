@@ -8,6 +8,7 @@ module.exports = async (client) => {
 	let apodChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 	
 	console.log(`${timestamp()} BOOT  |  Scheduled APOD to post every day at 10:00 US Central.`);
+	console.log(`${timestamp()} BOOT  |  Scheduled APOD to post every day at 22:00 US Central.`);
 
 	try {
 		cron.schedule('* 10 * * *', async () => {
@@ -16,7 +17,12 @@ module.exports = async (client) => {
 			await apodChannel.send({ embeds: [embed] });
 			console.log(`${timestamp()} APOD  ▨  successfully posted daily morning post`);
 		});
+		
+		cron.schedule('* 22 * * *', async () => {
+			let embed = await apodEmbed(null, true);
 			
+			await apodChannel.send({ embeds: [embed] });
+			console.log(`${timestamp()} APOD  ▨  successfully posted nightly random post`);
 		});
 	} catch (error) {
 		console.log(`${timestamp()} ERROR !!! cron failed unexpectedly: ${error}`);
