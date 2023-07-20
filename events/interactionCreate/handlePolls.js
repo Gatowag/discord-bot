@@ -2,7 +2,7 @@ const { Interaction } = require('discord.js');
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-const diagnostics = true;
+const diagnostics = false;
 
 /**
  * 
@@ -20,7 +20,7 @@ module.exports = async (interaction) => {
 		if (!type || !pollID || !action) return;
 		if (type !== 'poll') return;
 
-		diagnostics && console.log(`DIAG  ▢  new vote detected, starting poll update`);
+		diagnostics && console.log(`\nDIAG  ▢  new vote detected, starting poll update`);
 
 		// tell discord to chill out
 		let loading = await interaction.deferReply({ ephemeral: true });
@@ -59,6 +59,8 @@ module.exports = async (interaction) => {
 
 		// run if the user has voted in this poll before
 		if (voteCheck.filter((v) => (v > -1)).length > 0) {
+			diagnostics && console.log(`DIAG  |  user has voted in this poll before`);
+
 			// if they're double-voting, notify user and discontinue
 			if (voteCheck[voteArr] > -1) {
 				await loading.edit(`You can't vote for this option more than once.`);
@@ -66,6 +68,9 @@ module.exports = async (interaction) => {
 				return;
 			// if they're changing their vote, notify user and remove their previous vote
 			} else {
+				diagnostics && console.log(`DIAG  |  changed vote detected, removing previous vote`);
+
+				// remove their previous vote and subtract from the vote count
 				for (i = 0; i < optionTotal; i++) {
 					if (voteCheck[i] > -1) {
 						tPoll[i].splice(voteCheck[i], 1);
@@ -76,6 +81,7 @@ module.exports = async (interaction) => {
 				};
 				diagnostics && console.log(`DIAG  |  previous votes removed`);
 			};
+
 		// run if the user is voting in the poll for the first time
 		} else {
 			diagnostics && console.log(`DIAG  |  new vote detected, attempting to notify user`);
@@ -90,7 +96,6 @@ module.exports = async (interaction) => {
 
 		// update the database
 		await targetPoll.save();
-
 		diagnostics && console.log(`DIAG  |  data has been stored and saved to database`);
 
 		// update every field in the voting embed to reflect new vote count
