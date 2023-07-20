@@ -1,15 +1,13 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { request } = require('undici');
-const timestamp = require('../utils/timestamp');
-const ms = require('ms');
 require('dotenv').config();
+const { SlashCommandBuilder } = require('discord.js');
+const timestamp = require('../utils/timestamp');
 const apodEmbed = require('../utils/apodEmbed');
 
 module.exports = {
 	deleted: false,
 	data: new SlashCommandBuilder()
 		.setName('apod')
-		.setDescription('Generate an embed from today\'s Astronomy Picture of the Day.')
+		.setDescription('Generate an embed from NASA\'s Astronomy Picture of the Day.')
 		.addStringOption((option) =>
 			option
 				.setName('date')
@@ -23,7 +21,6 @@ module.exports = {
 
 		const dateIn = interaction.options.get('date')?.value;
 		const rand = interaction.options.get('random')?.value;
-		
 		const u = interaction.member.displayName;
 
 		try {
