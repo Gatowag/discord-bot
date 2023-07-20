@@ -1,13 +1,11 @@
 require('dotenv').config();
-const { EmbedBuilder } = require('discord.js');
-const { request } = require('undici');
 const timestamp = require('../../utils/timestamp');
 const apodEmbed = require('../../utils/apodEmbed');
 var cron = require('node-cron');
 
 module.exports = async (client) => {
 
-	let testChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
+	let apodChannel = client.channels.cache.find(channel => channel.id === process.env.APOD_CHANNEL);
 	
 	console.log(`${timestamp()} BOOT  |  Scheduled APOD to post every day at 10:00 US Central.`);
 
@@ -21,6 +19,6 @@ module.exports = async (client) => {
 			
 		});
 	} catch (error) {
-		console.log(`${timestamp()} ERROR ___ Cron failed unexpectedly: ${error}`);
+		console.log(`${timestamp()} ERROR !!! cron failed unexpectedly: ${error}`);
 	};
 };
