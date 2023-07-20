@@ -26,13 +26,14 @@ module.exports = {
 		const dateIn = interaction.options.get('date')?.value;
 		const rand = interaction.options.get('random')?.value;
 		const u = interaction.member.displayName;
+		let quiet;
 
 		diagnostics && console.log(`\nDIAG  ▢  attempting to start apod post`);
 
 		try {
 			diagnostics && console.log(`DIAG  |  creating deferred reply`);
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
-			let quiet = await interaction.deferReply();
+			quiet = await interaction.deferReply();
 
 			let embed = await apodEmbed(dateIn, rand);
 			
@@ -40,6 +41,9 @@ module.exports = {
 			console.log(`${timestamp()} APOD  ▨  ${u} successfully sent apod post`);
 
 		} catch (error) {
+			quiet.edit({ content: `An error occured and APOD could not post.\nThis message will self-delete in 5 seconds.` })
+				.then(msg => {
+					setTimeout(() => msg.delete(), 5000); });
 			console.log(`${timestamp()} ERROR !!! ${u}'s APOD request failed: ${error}`);
 		};
 	}
