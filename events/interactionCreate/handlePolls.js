@@ -3,11 +3,11 @@ const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
 const diagnostics = false;
-
 /**
  * 
  * @param {Interaction} interaction
  */
+
 module.exports = async (interaction) => {
 	// discontinue if not relevant
 	if (!interaction.isButton() || !interaction.customId) return;
@@ -131,6 +131,6 @@ module.exports = async (interaction) => {
 		return;
 
 	} catch (error) {
-		console.log(`${timestamp()} ERROR ___ couldn't update poll: ${error}`);
+		console.log(`${timestamp()} ERROR >!< couldn't update poll: ${error}`);
 	}
 }

@@ -157,7 +157,7 @@ module.exports = {
 			console.log(`${timestamp()} EMBED ___ ${u} successfully created an embed.`);
 
 		} catch (error) {
-			console.log(`${timestamp()} ERROR ___ couldn't complete embed for ${u}: ${error}`);
+			console.log(`${timestamp()} ERROR >!< couldn't complete embed for ${u}: ${error}`);
 		}
 	},
 };

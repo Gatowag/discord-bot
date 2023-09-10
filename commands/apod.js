@@ -44,7 +44,7 @@ module.exports = {
 			quiet.edit({ content: `An error occured and APOD could not post.\nThis message will self-delete in 5 seconds.` })
 				.then(msg => {
 					setTimeout(() => msg.delete(), 5000); });
-			console.log(`${timestamp()} ERROR !!! ${u}'s APOD request failed: ${error}`);
+			console.log(`${timestamp()} ERROR >!< ${u}'s APOD request failed: ${error}`);
 		};
 	}
 };

@@ -48,7 +48,7 @@ module.exports = {
 				console.log(`${timestamp()} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 
 				await level.save().catch((e) => {
-					console.log(`${timestamp()} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
+					console.log(`${timestamp()} ERROR >!< couldn't adjust ${userName.displayName}'s reputation amount: ${e}`);
 					return;
 				})
 			}
@@ -73,7 +73,7 @@ module.exports = {
 				console.log(`${timestamp()} REP MOD ___ ${u} modified ${userName.displayName}'s rep amount from ${oldRep}/${levelScaling(level.level)} to ${level.rep}/${levelScaling(level.level)}. They are level ${level.level}.` + defLvlUp);
 			}
 		} catch (error) {
-			console.log(`${timestamp()} ERROR ___ couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
+			console.log(`${timestamp()} ERROR >!< couldn't adjust ${userName.displayName}'s reputation amount: ${error}`);
 		}
 
 

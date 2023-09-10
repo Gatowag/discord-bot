@@ -25,6 +25,6 @@ module.exports = async (client) => {
 			console.log(`${timestamp()} APOD  ▨  successfully posted nightly random post`);
 		});
 	} catch (error) {
-		console.log(`${timestamp()} ERROR !!! cron failed unexpectedly: ${error}`);
+		console.log(`${timestamp()} ERROR >!< cron failed unexpectedly: ${error}`);
 	};
 };

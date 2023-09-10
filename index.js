@@ -30,7 +30,7 @@ const client = new Client({
 		console.log(`${timestamp} BOOT  |  Successfully logged in to Discord.`);
 
 	} catch (error) {
-		console.log(`${timestamp} ERROR !!! Couldn't log in properly: ${error}`);
+		console.log(`${timestamp} ERROR >!< Couldn't log in properly: ${error}`);
 	}
 })();
 

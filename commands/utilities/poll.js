@@ -171,7 +171,7 @@ module.exports = {
 
 			return;
 		} catch (error) {
-			console.log(`${timestamp()} ERROR !!! couldn't complete poll for ${u}: ${error}`);
+			console.log(`${timestamp()} ERROR >!< couldn't complete poll for ${u}: ${error}`);
 		}
 	},
 };

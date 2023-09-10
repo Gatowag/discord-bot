@@ -41,7 +41,7 @@ module.exports = {
 			};
 
 		} catch (error) {
-			console.log(`${timestamp()} ERROR ___ couldn't convert to normal YT link: ${error}`);
+			console.log(`${timestamp()} ERROR >!< couldn't convert to normal YT link: ${error}`);
 		}
 	},
 }

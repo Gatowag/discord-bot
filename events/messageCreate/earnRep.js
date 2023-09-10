@@ -55,7 +55,7 @@ module.exports = async (message, client) => {
 							message.member.roles.remove(oldRole);
 							console.log(`${timestamp()} ROLES ___ ${u} was granted ${newRole.name} and revoked ${oldRole.name}`);
 						})
-						.catch(error => console.log(`${timestamp()} ERROR ___ unable to add and remove roles: ${error}`));
+						.catch(error => console.log(`${timestamp()} ERROR >!< unable to add and remove roles: ${error}`));
 					
 				};
 				
@@ -82,8 +82,9 @@ module.exports = async (message, client) => {
 					});
 			}
 
-			await level.save().catch((e) => {
-				console.log(`${timestamp()} ERROR ___ couldn't save new level for ${u}: ${e}`);
+			// update the database data and discontinue process
+			await userData.save().catch((e) => {
+				console.log(`${timestamp()} ERROR >!< couldn't save new level for ${u}: ${e}`);
 				return;
 			});
 		}
@@ -101,6 +102,6 @@ module.exports = async (message, client) => {
 			await newLevel.save();
 		}
 	} catch (error) {
-		console.log(`${timestamp()} ERROR ___ couldn't earn reputation for ${u}: ${error}`);
+		console.log(`${timestamp()} ERROR >!< couldn't earn reputation for ${u}: ${error}`);
 	}
 };

@@ -69,7 +69,7 @@ module.exports = {
 			}
 
 		} catch (error) {
-			console.log(`${timestamp()} ERROR ___ couldn't determine ${uName}'s progress: ${error}`);
+			console.log(`${timestamp()} ERROR >!< couldn't determine ${uName}'s progress: ${error}`);
 		}
 	},
 }
