@@ -2,7 +2,6 @@ const { Client, Message } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 const timestamp = require('../../utils/timestamp');
-
 /**
  * 
  * @param {Message} message 
@@ -11,45 +10,53 @@ const timestamp = require('../../utils/timestamp');
  */
 
 module.exports = async (message, client) => {
+	// discontinue if the message isn't relevant
 	if (!message.inGuild() || message.author.bot) return;
-
-	const roleIDs = [
-		'747990765409402960',	//0: sentient being
-		'747991758453080185',	//1: local dignitary
-		'777788958251155497',	//2: planetary diplomat
-		'777789109191835678',	//3: galactic ambassador
-		'777790027525652480'	//4: interdimensional explorer
-	];
 
 	const u = message.member.displayName;
 	const repEarned = 1;
 
-	const query = {
-		userId: message.author.id,
-		guildId: message.guild.id,
-	};
-
 	try {
-		const level = await Level.findOne(query);
+		// declare roles that can be added or removed
+		const roleIDs = [
+			'747990765409402960',	//0: sentient being
+			'747991758453080185',	//1: local dignitary
+			'777788958251155497',	//2: planetary diplomat
+			'777789109191835678',	//3: galactic ambassador
+			'777790027525652480'	//4: interdimensional explorer
+		];
 
-		if (level) {
-			const oldLvl = level.level;
-			level.rep += repEarned;
+		// structure user data from interaction
+		const query = {
+			userId: message.author.id,
+			guildId: message.guild.id,
+		};
 
-			console.log(`${timestamp()} MSG SENT ___ user: ${u}, rep: ${level.rep}/${levelScaling(level.level)}, lvl: ${level.level}`);
+		// grab stored user data from the database
+		const userData = await Level.findOne(query);
 
-			if (level.rep > levelScaling(level.level)) {
-				level.rep = 1;
-				level.level += 1;
+		// if there is data for this user already stored in the database
+		if (userData) {
+			const oldLvl = userData.level;
+			userData.rep += repEarned;
+
+			console.log(`${timestamp()} MSG SENT ___ user: ${u}, rep: ${userData.rep}/${levelScaling(userData.level)}, lvl: ${userData.level}`);
+
+			// if the user's reputation exceedes their level's threshold
+			if (userData.rep > levelScaling(userData.level)) {
+				userData.rep = 1;
+				userData.level += 1;
 
 				let unlocksChannel = message.guild.channels.resolve('809015126857875466');
-				let newRole = message.guild.roles.cache.get(roleIDs[level.level]);
+				let newRole = message.guild.roles.cache.get(roleIDs[userData.level]);
 				let lvlMsgNum = 5;
 
-				if (level.level < 5) {
-					let oldRole = message.guild.roles.cache.get(roleIDs[level.level - 1]);
-					lvlMsgNum = level.level;
+				// if the user's new level is less than 5, manage role change and prep message
+				if (userData.level < 5) {
+					let oldRole = message.guild.roles.cache.get(roleIDs[userData.level - 1]);
+					lvlMsgNum = userData.level;
 
+					// add new role before removing old role so there's no lapse in permissions
 					message.member.roles.add(newRole)
 						.then(() => {
 							message.member.roles.remove(oldRole);
@@ -71,10 +78,10 @@ module.exports = async (message, client) => {
 					//4: interdimensional explorer
 					`${message.member} glows brightly amongst the salted sky as an **${newRole.name.slice(9)}**. Their vast experience inherits a trust required for the last remaining channel. Be sure to check ${unlocksChannel} to see a breakdown. Knowledge can never be quenched nor suppressed to extinction so long as someone exists to pursue it.\n\n*This message self-terminates in 30 seconds.*`,
 					//5+ ???
-					`${message.member} just reached level ${level.level}. At this point you don't get new roles or channels, you just get a little older and a little better. Until next time...\n\n*This message self-terminates in 30 seconds.*`
+					`${message.member} just reached level ${userData.level}. At this point you don't get new roles or channels, you just get a little older and a little better. Until next time...\n\n*This message self-terminates in 30 seconds.*`
 				];
 				
-				console.log(`${timestamp()} LVL UP ___ user: ${u}, from lvl ${oldLvl} to ${level.level}`);
+				console.log(`${timestamp()} LVL UP ___ user: ${u}, from lvl ${oldLvl} to ${userData.level}`);
 
 				message.reply(lvlMessages[lvlMsgNum])
 					.then(msg => {
@@ -89,17 +96,20 @@ module.exports = async (message, client) => {
 			});
 		}
 
-		// if (!level)
+		// if there isn't data stored for this user in the database yet
 		else {
 			console.log(`${timestamp()} DATABASE ___ creating new entry for ${u}`);
-			//create new level
-			const newLevel = new Level({
+
+			// prep data for new database entry
+			const newUserData = new Level({
 				userId: message.author.id,
 				guildId: message.guild.id,
 				rep: repEarned,
 			});
 
-			await newLevel.save();
+			// save user data to database
+			await newUserData.save();
+			return;
 		}
 	} catch (error) {
 		console.log(`${timestamp()} ERROR >!< couldn't earn reputation for ${u}: ${error}`);
