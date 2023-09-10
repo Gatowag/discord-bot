@@ -22,7 +22,7 @@ module.exports = {
 				.setDescription('YYYY-MM-DD of the desired APOD (must be after 1995-06-16)')),
 	
 	run: async ({ interaction }) => {
-
+		// declare user input, username, and reply
 		const dateIn = interaction.options.get('date')?.value;
 		const rand = interaction.options.get('random')?.value;
 		const u = interaction.member.displayName;
