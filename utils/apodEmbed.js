@@ -30,7 +30,7 @@ async function apodEmbed(dateIn, rand) {
 
 		
 		/* --- */ diagnostics && console.log(`DIAG  |  requesting NASA API info`);
-		let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${dateOut}`);
+		let apodResponse = await request(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}${dateOut}&thumbs=True`);
 
 		/* --- */ diagnostics && console.log(`DIAG  |  parsing NASA API info`);
 		let data = await apodResponse.body.json();
@@ -57,15 +57,23 @@ async function apodEmbed(dateIn, rand) {
 				
 			// sending a different message if the post is not an image & copyrighted
 			} else {
+				let urlClean;
+				if (data.url.indexOf("youtube.com/embed") != -1) {
+					let IDstart = data.url.lastIndexOf("/") + 1;
+					let IDend = data.url.indexOf("?");
+					if (IDend == -1) { urlClean = `https://youtu.be/${data.url.slice(IDstart)}` }
+					else { urlClean = `https://youtu.be/${data.url.slice(IDstart, IDend)}` };
+				}
+				else { urlClean = data.url };
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
 					.setURL(permaLink)
 					.setDescription(data.explanation)
-					.setImage(`${data.thumbnail}`)
+					.setImage(`${data.thumbnail_url}`)
 					.setColor(typeC)
 					.addFields({
 						name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
-						value: data.url,
+						value: urlClean,
 						inline: false,
 					})
 					.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}${typeF}` }); // please keep this due to NASA's restrictions
