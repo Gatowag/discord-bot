@@ -2,7 +2,8 @@ const { Interaction } = require('discord.js');
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-const diagnostics = false;
+let diagnostics = true;
+
 /**
  * 
  * @param {Interaction} interaction
