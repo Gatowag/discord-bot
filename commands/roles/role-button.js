@@ -26,7 +26,8 @@ module.exports = {
 		
 		const role1 = interaction.options.getRole('role');
 		const label1 = interaction.options.get('label')?.value;
-		const success1 = interaction.options.get('success-reply')?.value;
+		const successOn = interaction.options.get('success-reply')?.value;
+		const successOff = `You have removed the role ${role1.name}`;
 
 		const button = new ButtonBuilder()
 			.setCustomId('button1')
@@ -39,8 +40,8 @@ module.exports = {
 			button.setLabel(`${label1}`);
 		};
 		
-		if (success1 == null) {
-			success1 = `You now have the role ${role1.name}`;
+		if (!successOn) {
+			successOn = `You have added the role ${role1.name}`;
 		};
 		
 		const buttonRow = new ActionRowBuilder()
@@ -49,7 +50,7 @@ module.exports = {
 		
 		await interaction.reply({ components: [buttonRow] });
 
-		console.log(`${timestamp()} BUTTON ___ ${interaction.member.displayName} created a button to grant the ${role1.name} role.`)
+		console.log(`${timestamp()} BUTTON ___ ${interaction.member.displayName} created a button to toggle the ${role1.name} role.`)
 
 		const collector = await interaction.channel.createMessageComponentCollector();
 
@@ -57,8 +58,13 @@ module.exports = {
 			const member = i.member;
 
 			if (i.customId === 'button1') {
-				member.roles.add(role1);
-				i.reply({ content: `${success1}`, ephemeral: true });
+				if (member.roles.cache.has(role1)) {
+					member.roles.remove(role1);
+					i.reply({ content: `${successOff}`, ephemeral: true });
+				} else {
+					member.roles.add(role1);
+					i.reply({ content: `${successOn}`, ephemeral: true });
+				}
 				
 				console.log(`${timestamp()} BUTTON ___ ${member.displayName} was successfully granted the ${role1.name} role.`);
 			};
