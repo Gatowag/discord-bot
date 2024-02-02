@@ -39,7 +39,7 @@ module.exports = {
 
 			// create button
 			const button = new ButtonBuilder()
-				.setCustomId(`button${role}`)
+				.setCustomId(`role.${role.id}`)
 				.setLabel(`${label}`)
 				.setStyle(ButtonStyle.Success);
 		
