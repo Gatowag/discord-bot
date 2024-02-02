@@ -2,7 +2,9 @@ const { Interaction } = require('discord.js');
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-let diagnostics = true;
+require('dotenv').config();
+const diagLocal = false;
+const diag = diagLocal || process.env.DIAGNOSTICS;
 
 /**
  * 
@@ -21,7 +23,7 @@ module.exports = async (interaction) => {
 		if (!type || !pollID || !action) return;
 		if (type !== 'poll') return;
 
-		diagnostics && console.log(`\nDIAG  ▢  new vote detected, starting poll update`);
+		diag && console.log(`\nDIAG  ▢  new vote detected, starting poll update`);
 
 		// tell discord to chill out
 		let loading = await interaction.deferReply({ ephemeral: true });
@@ -56,15 +58,15 @@ module.exports = async (interaction) => {
 			tPoll[3].length,
 		];
 
-		diagnostics && console.log(`DIAG  |  data has been assigned, starting vote checks`);
+		diag && console.log(`DIAG  |  data has been assigned, starting vote checks`);
 
 		// run if the user has voted in this poll before
 		if (voteCheck.filter((v) => (v > -1)).length > 0) {
-			diagnostics && console.log(`DIAG  |  user has voted in this poll before`);
+			diag && console.log(`DIAG  |  user has voted in this poll before`);
 
 			// if they're double-voting, notify user and discontinue
 			if (voteCheck[voteArr] > -1) {
-				diagnostics && console.log(`DIAG  |  double-vote detected`);
+				diag && console.log(`DIAG  |  double-vote detected`);
 
 				// remove their previous vote and subtract from the vote count
 				for (i = 0; i < optionTotal; i++) {
@@ -74,14 +76,14 @@ module.exports = async (interaction) => {
 						break;
 					}
 				};
-				diagnostics && console.log(`DIAG  |  previous vote removed`);
+				diag && console.log(`DIAG  |  previous vote removed`);
 
 				await loading.edit(`You've retracted your vote from the poll.`);
-				diagnostics && console.log(`DIAG  ▨  notified user, discontinuing\n`);
+				diag && console.log(`DIAG  ▨  notified user, discontinuing\n`);
 
 			// if they're changing their vote, notify user and remove their previous vote
 			} else {
-				diagnostics && console.log(`DIAG  |  changed vote detected, removing previous vote`);
+				diag && console.log(`DIAG  |  changed vote detected, removing previous vote`);
 
 				// remove their previous vote and subtract from the vote count
 				for (i = 0; i < optionTotal; i++) {
@@ -93,7 +95,7 @@ module.exports = async (interaction) => {
 				};
 
 				await loading.edit(`You've changed your vote to option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
-				diagnostics && console.log(`DIAG  |  previous vote removed`);
+				diag && console.log(`DIAG  |  previous vote removed`);
 
 				// store the user's vote
 				tPoll[voteArr].push(interaction.user.id);
@@ -102,10 +104,10 @@ module.exports = async (interaction) => {
 
 		// run if the user is voting in the poll for the first time
 		} else {
-			diagnostics && console.log(`DIAG  |  new vote detected, attempting to notify user`);
+			diag && console.log(`DIAG  |  new vote detected, attempting to notify user`);
 			// notify the user that the button worked and verify their choice
 			await loading.edit(`You've voted for option ${voteBtn}: **${targetMsgEmbed.fields[voteArr].name.slice(3)}**`);
-			diagnostics && console.log(`DIAG  |  notified user`);
+			diag && console.log(`DIAG  |  notified user`);
 
 			// store the user's vote
 			tPoll[voteArr].push(interaction.user.id);
@@ -114,19 +116,19 @@ module.exports = async (interaction) => {
 
 		// update the database
 		await targetPoll.save();
-		diagnostics && console.log(`DIAG  |  data has been stored and saved to database`);
+		diag && console.log(`DIAG  |  data has been stored and saved to database`);
 
 		// update every field in the voting embed to reflect new vote count
 		for (f = 0; f < optionTotal; f++) {
 			targetMsgEmbed.fields[f].value = pollProgress(f, voteTotals);
 		};
 
-		diagnostics && console.log(`DIAG  |  embed fields updated`);
+		diag && console.log(`DIAG  |  embed fields updated`);
 
 		// update the voting embed in the original poll message
 		await targetMsg.edit({ embeds: [targetMsgEmbed] });
 
-		diagnostics && console.log(`DIAG  |  voting embed updated\nDIAG  ▨  finished\n`);
+		diag && console.log(`DIAG  |  voting embed updated\nDIAG  ▨  finished\n`);
 
 		// discontinue
 		return;

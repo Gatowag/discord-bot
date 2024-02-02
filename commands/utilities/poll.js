@@ -2,7 +2,9 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-const diagnostics = true;
+require('dotenv').config();
+const diagLocal = true;
+const diag = diagLocal || process.env.DIAGNOSTICS;
 
 module.exports = {
 	deleted: false,
@@ -47,13 +49,13 @@ module.exports = {
 	
 	run: async ({ interaction }) => {
 		const u = interaction.member.displayName;
-		diagnostics && console.log(`\nDIAG  ▢  new poll started`);
+		diag && console.log(`\nDIAG  ▢  new poll started`);
 
 		try {
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
 			let loading = await interaction.deferReply({ ephemeral: true });
 
-			diagnostics && console.log(`DIAG  |  init reply sent`);
+			diag && console.log(`DIAG  |  init reply sent`);
 
 			// get inputs
 			let c1 = interaction.options.get('choice1')?.value;
@@ -67,7 +69,7 @@ module.exports = {
 			// set up variables within which we build stuff
 			let pollPrompt, pollVoting, embedPrompt, embedVoting, descript;
 
-			diagnostics && console.log(`DIAG  |  inputs and variables assigned`);
+			diag && console.log(`DIAG  |  inputs and variables assigned`);
 			
 			// attach extra info to description field, if present
 			if (info) {
@@ -100,7 +102,7 @@ module.exports = {
 				embedVoting = new EmbedBuilder()
 					.setColor(0x466df1);
 				
-				diagnostics && console.log(`DIAG  |  image poll detected, both embeds sent, image embed complete`);
+					diag && console.log(`DIAG  |  image poll detected, both embeds sent, image embed complete`);
 				
 			// run as text poll (1 embed)
 			} else {
@@ -117,7 +119,7 @@ module.exports = {
 					.setColor(0x466df1)
 					.setFooter({ text: `Only your latest vote is counted.` });
 				
-				diagnostics && console.log(`DIAG  |  text poll detected, voting embed sent`);
+					diag && console.log(`DIAG  |  text poll detected, voting embed sent`);
 			};
 
 			// fill data in the poll schema to ready for database
@@ -131,7 +133,7 @@ module.exports = {
 			// send data to database
 			await newPoll.save();
 
-			diagnostics && console.log(`DIAG  |  data has been saved to database`);
+			diag && console.log(`DIAG  |  data has been saved to database`);
 
 			// prep for button creation
 			const optionArr = [c1, c2, c3, c4];
@@ -155,17 +157,17 @@ module.exports = {
 				buttonArr[1].setLabel('No').setStyle(ButtonStyle.Danger);
 			};
 
-			diagnostics && console.log(`DIAG  |  buttons created`);
+			diag && console.log(`DIAG  |  buttons created`);
 			
 			// update the voting message with the completed embed and buttons
 			await pollVoting.edit({ embeds: [embedVoting], components: [buttonRow] });
 
-			diagnostics && console.log(`DIAG  |  voting embed updated`);
+			diag && console.log(`DIAG  |  voting embed updated`);
 
 			// removes thinking message
 			await loading.delete();
 
-			diagnostics && console.log(`DIAG  |  init reply deleted\nDIAG  ▨  finished\n`);
+			diag && console.log(`DIAG  |  init reply deleted\nDIAG  ▨  finished\n`);
 
 			console.log(`${timestamp()} POLL ___ ${u} successfully created a poll: ${question}`);
 
