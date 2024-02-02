@@ -14,11 +14,13 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName('label')
-				.setDescription('text that displays on the button'))
+				.setDescription('text that displays on the button')
+				.setRequired(false))
 		.addStringOption((option) =>
 			option
 				.setName('success-reply')
-				.setDescription('message sent when completed')),
+				.setDescription('message sent when completed')
+				.setRequired(false)),
 	
 	run: async ({ interaction }) => {
 		
