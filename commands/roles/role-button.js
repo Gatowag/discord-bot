@@ -31,13 +31,11 @@ module.exports = {
 
 		const button = new ButtonBuilder()
 			.setCustomId('button1')
-			.setLabel(`${role1.name}`)
+			.setLabel(`${label1}`)
 			.setStyle(ButtonStyle.Success);
 		
-		if (label1 == null) {
+		if (!label1) {
 			button.setLabel(`${role1.name}`);
-		} else {
-			button.setLabel(`${label1}`);
 		};
 		
 		if (!successOn) {
