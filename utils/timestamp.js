@@ -1,5 +1,5 @@
 function timestamp() {
-	const timezoneOffset = -5;
+	const timezoneOffset = -6;
 	let dBase = new Date();
 	dBase.setHours(dBase.getHours() + timezoneOffset);
 	let d = dBase.toISOString();
