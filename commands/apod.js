@@ -2,7 +2,9 @@ require('dotenv').config();
 const { SlashCommandBuilder } = require('discord.js');
 const timestamp = require('../utils/timestamp');
 const apodEmbed = require('../utils/apodEmbed');
-const diagnostics = false;
+require('dotenv').config();
+const diagLocal = false;
+const diag = diagLocal || process.env.DIAGNOSTICS;
 
 module.exports = {
 	deleted: false,
@@ -28,10 +30,10 @@ module.exports = {
 		const u = interaction.member.displayName;
 		let quiet;
 
-		diagnostics && console.log(`\nDIAG  ▢  attempting to start apod post`);
+		diag && console.log(`\nDIAG  ▢  attempting to start apod post`);
 
 		try {
-			diagnostics && console.log(`DIAG  |  creating deferred reply`);
+			diag && console.log(`DIAG  |  creating deferred reply`);
 			// notifies user "<application> is thinking..." and prevents error message that application did not respond
 			quiet = await interaction.deferReply();
 
