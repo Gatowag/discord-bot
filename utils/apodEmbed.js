@@ -42,6 +42,8 @@ async function apodEmbed(dateIn, rand) {
 		// checks if `copyright` field is present in the JSON data - if, then includes `footer` field of embed to display copyright holder(s)
 		if ('copyright' in data) {
 
+			console.log(`${timestamp()} APOD  ▢  copyright found`);
+
 			// checks if the post type is image & copyrighted
 			if (data.media_type === 'image') {
 				let embed = new EmbedBuilder()
@@ -85,6 +87,9 @@ async function apodEmbed(dateIn, rand) {
 
 		// checks if the post type is a video and not copyrighted
 		} else if (data.media_type === 'video') {
+
+			console.log(`${timestamp()} APOD  ▢  no copyright found, video type`);
+
 			let embed = new EmbedBuilder()
 				.setTitle(data.title)
 				.setURL(permaLink)
@@ -103,6 +108,9 @@ async function apodEmbed(dateIn, rand) {
 			
 		// checks if the post type is an image and not copyrighted
 		} else if (data.media_type === 'image') {
+
+			console.log(`${timestamp()} APOD  ▢  no copyright found, image type`);
+
 			let embed = new EmbedBuilder()
 				.setTitle(data.title)
 				.setURL(permaLink)
