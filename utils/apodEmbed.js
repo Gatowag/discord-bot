@@ -94,7 +94,7 @@ async function apodEmbed(dateIn, rand) {
 				.setTitle(data.title)
 				.setURL(permaLink)
 				.setDescription(data.explanation)
-				.setImage(`${data.thumbnail}`)
+				.setImage(`${data.thumbnail_url}`)
 				.setColor(typeC)
 				.addFields({
 					name: 'Discord doesn\'t allow videos in rich embeds, so click through to check it out.',
