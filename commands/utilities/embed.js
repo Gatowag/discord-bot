@@ -101,7 +101,8 @@ module.exports = {
 			//get inputs
 			const eTitle = interaction.options.get('title').value;
 			const eUrl = interaction.options.get('url').value;
-			const eDescript = interaction.options.get('descript').value;
+			let eDescript = interaction.options.get('descript').value;
+			eDescript = eDescript.replace(/\\n/g, "\n");
 			const eDuration = interaction.options.get('duration').value;
 			const file = await interaction.options.getAttachment('image');
 			const eType = interaction.options.get('public').value;
