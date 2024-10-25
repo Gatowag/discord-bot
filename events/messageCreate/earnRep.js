@@ -2,6 +2,10 @@ const { Client, Message } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 const timestamp = require('../../utils/timestamp');
+require('dotenv').config();
+const diagLocal = true;
+const diag = diagLocal || process.env.DIAGNOSTICS;
+
 /**
  * 
  * @param {Message} message 
@@ -15,6 +19,8 @@ module.exports = async (message, client) => {
 
 	const u = message.member.displayName;
 	const repEarned = 1;
+
+	diag && console.log(`DIAG  |  user (${u}) sent message`);
 
 	try {
 		// declare roles that can be added or removed
@@ -32,11 +38,16 @@ module.exports = async (message, client) => {
 			guildId: message.guild.id,
 		};
 
+		diag && console.log(`DIAG  |  userId: ${query.userId}, guildId: ${query.guildId}`);
+
 		// grab stored user data from the database
 		const userData = await Level.findOne(query);
 
+		diag && console.log(`DIAG  |  ran user info through database`);
+
 		// if there is data for this user already stored in the database
 		if (userData) {
+			diag && console.log(`DIAG  |  found info in database`);
 			const oldLvl = userData.level;
 			userData.rep += repEarned;
 
@@ -44,15 +55,20 @@ module.exports = async (message, client) => {
 
 			// if the user's reputation exceedes their level's threshold
 			if (userData.rep > levelScaling(userData.level)) {
+				diag && console.log(`DIAG  |  level increase detected`);
 				userData.rep = 1;
+				diag && console.log(`DIAG  |  increased rep by 1`);
 				userData.level += 1;
+				diag && console.log(`DIAG  |  increased level by 1`);
 
 				let unlocksChannel = message.guild.channels.resolve('809015126857875466');
 				let newRole = message.guild.roles.cache.get(roleIDs[userData.level]);
 				let lvlMsgNum = 5;
+				diag && console.log(`DIAG  |  defined some variables`);
 
 				// if the user's new level is less than 5, manage role change and prep message
 				if (userData.level < 5) {
+					diag && console.log(`DIAG  |  user level is less than 5 and needs a level up message`);
 					let oldRole = message.guild.roles.cache.get(roleIDs[userData.level - 1]);
 					lvlMsgNum = userData.level;
 
@@ -105,6 +121,7 @@ module.exports = async (message, client) => {
 
 		// if there isn't data stored for this user in the database yet
 		else {
+			diag && console.log(`DIAG  |  did not find info in database`);
 			console.log(`${timestamp()} DATABASE ___ creating new entry for ${u}`);
 
 			// prep data for new database entry
