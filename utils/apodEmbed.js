@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { EmbedBuilder } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
 const timestamp = require('../utils/timestamp');
 const diagnostics = false;
@@ -46,16 +46,17 @@ async function apodEmbed(dateIn, rand) {
 
 			// checks if the post type is image & copyrighted
 			if (data.media_type === 'image') {
+				const file = new AttachmentBuilder(`${data.url}`);
 				let embed = new EmbedBuilder()
 					.setTitle(data.title)
 					.setURL(permaLink)
 					.setDescription(data.explanation)
-					.setImage(`${data.url}`)
+					.setImage(`attachment://${data.url.slice(data.url.lastIndexOf("/") + 1)}`)
 					.setColor(typeC)
 					.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}${typeF}` }); // please keep this due to NASA's restrictions
 				
 				console.log(`${timestamp()} APOD  ▢  embed created with image and copyright`);
-				return embed;
+				return [embed, file];
 				
 			// sending a different message if the post is not an image & copyrighted
 			} else {
@@ -81,7 +82,7 @@ async function apodEmbed(dateIn, rand) {
 					.setFooter({ text: `©️ ${data.copyright.trim().replaceAll(' ,',',')}\n${data.date}${typeF}` }); // please keep this due to NASA's restrictions
 					
 				console.log(`${timestamp()} APOD  ▢  embed created w/o image but with copyright`);
-				return embed;
+				return [embed];
 				
 			}
 
@@ -104,23 +105,25 @@ async function apodEmbed(dateIn, rand) {
 				.setFooter({ text: `${data.date}${typeF}` });
 		
 			console.log(`${timestamp()} APOD  ▢ embed created with video placeholder but no copyright`);
-			return embed;
+			return [embed];
 			
 		// checks if the post type is an image and not copyrighted
 		} else if (data.media_type === 'image') {
 
 			console.log(`${timestamp()} APOD  ▢  no copyright found, image type`);
+			const file = new AttachmentBuilder(`${data.url}`);
 
 			let embed = new EmbedBuilder()
 				.setTitle(data.title)
 				.setURL(permaLink)
 				.setDescription(data.explanation)
-				.setImage(`${data.url}`)
+				.setImage(`attachment://${data.url.slice(data.url.lastIndexOf("/") + 1)}`)
 				.setColor(typeC)
 				.setFooter({ text: `${data.date}${typeF}` });
 		
+			console.log(`${timestamp()} APOD  |  url: ${data.url}`);
 			console.log(`${timestamp()} APOD  ▢  embed created with image but no copyright`);
-			return embed;
+			return [embed, file];
 		}
 
 	} catch (error) {

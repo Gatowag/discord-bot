@@ -38,8 +38,12 @@ module.exports = {
 			quiet = await interaction.deferReply();
 
 			let embed = await apodEmbed(dateIn, rand);
-			
-			await quiet.edit({ embeds: [embed] });
+			if (embed.length > 1) {
+				await quiet.edit({ embeds: [embed[0]], files: [embed[1]] });
+			} else {
+				await quiet.edit({ embeds: [embed[0]] });
+			}
+
 			console.log(`${timestamp()} APOD  ▨  ${u} successfully sent apod post`);
 
 		} catch (error) {
