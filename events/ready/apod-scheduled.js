@@ -9,15 +9,21 @@ module.exports = async (client) => {
 
 		cron.schedule('0 15 * * *', async () => {
 			let embed = await apodEmbed();
-			
-			await apodChannel.send({ embeds: [embed] });
+			if (embed.length > 1) {
+				await apodChannel.send({ embeds: [embed[0]], files: [embed[1]] });
+			} else {
+				await apodChannel.send({ embeds: [embed[0]] });
+			}
 			console.log(`${timestamp()} APOD  ▨  successfully posted daily morning post`);
 		});
 		
 		cron.schedule('0 3 * * *', async () => {
 			let embed = await apodEmbed(null, true);
-			
-			await apodChannel.send({ embeds: [embed] });
+			if (embed.length > 1) {
+				await apodChannel.send({ embeds: [embed[0]], files: [embed[1]] });
+			} else {
+				await apodChannel.send({ embeds: [embed[0]] });
+			}
 			console.log(`${timestamp()} APOD  ▨  successfully posted nightly random post`);
 		});
 
