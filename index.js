@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const { Client, IntentsBitField } = require('discord.js');
 const { CommandHandler } = require('djs-commander');
 const mongoose = require('mongoose');

@@ -2,7 +2,7 @@ const { Client, Message } = require('discord.js');
 const Level = require('../../models/levelStructure');
 const levelScaling = require('../../utils/levelScaling');
 const timestamp = require('../../utils/timestamp');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const diagLocal = true;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

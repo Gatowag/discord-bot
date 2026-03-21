@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const timestamp = require('../../utils/timestamp');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const diagLocal = false;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

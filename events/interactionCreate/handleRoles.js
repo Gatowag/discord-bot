@@ -1,6 +1,6 @@
 const { Interaction } = require('discord.js');
 const timestamp = require('../../utils/timestamp');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const diagLocal = true;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

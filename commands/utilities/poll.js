@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const diagLocal = true;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

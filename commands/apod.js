@@ -1,8 +1,7 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const { SlashCommandBuilder } = require('discord.js');
 const timestamp = require('../utils/timestamp');
 const apodEmbed = require('../utils/apodEmbed');
-require('dotenv').config();
 const diagLocal = false;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

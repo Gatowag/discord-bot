@@ -2,7 +2,7 @@ const { Interaction } = require('discord.js');
 const pollData = require('../../models/pollData');
 const pollProgress = require('../../utils/pollProgress');
 const timestamp = require('../../utils/timestamp');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const diagLocal = false;
 const diag = diagLocal || process.env.DIAGNOSTICS;
 

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const timestamp = require('../../utils/timestamp');
 const apodEmbed = require('../../utils/apodEmbed');
 var cron = require('node-cron');
